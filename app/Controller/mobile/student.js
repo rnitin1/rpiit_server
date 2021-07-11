@@ -1,8 +1,9 @@
 const universalFunction = require("../../UniversalFuntions"),
   db = require("../../services/dboperations"),
   Model = require("../../Model"),
-  config = require("../../config");
-const { sendMail } = require("../../utils/sendMail");
+  config = require("../../config"),
+  randomstring = require("randomstring")
+const { sendMail1 } = require("../../utils/sendMail");
 
 exports.signup = async (req, res) => {
   try {
@@ -359,15 +360,19 @@ exports.forgotPassword = async (req, res) => {
     let code = randomstring.generate(8);
     let password = code.toUpperCase();
     let dataToSave = {
-      password: await bcrypt.hash(password, 10),
+      password:  await universalFunction.Password.getPassword(password)
+      
     };
     // let template = await forgotPasswordTemplate(password);
-    // let subject = "Reset Password";
-    await sendMail(email, subject, password).then(async (res) => {
-      await User.update({ email }, dataToSave, { new: true, lean: true });
+    let subject = "Reset Password";
+    console.log("Above")
+     sendMail1(email, subject, password).then(async (res) => {
+      await db.update(Model.Student ,{ email }, dataToSave, { new: true, lean: true });
     });
     res.status(200).send({ message: "Password has been sent to your mail" });
+    
   } catch (err) {
+    console.log(err)
     res.send(err);
   }
 };
