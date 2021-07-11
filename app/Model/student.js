@@ -1,8 +1,6 @@
 const mongoose = require("mongoose"),
   Schema = mongoose.Schema;
 
-
-
 let Student = new Schema(
   {
     name: { type: String, default: "", trim: true },
@@ -21,6 +19,7 @@ let Student = new Schema(
     isVerified: { type: Boolean, default: false },
     semester: { type: Number, index: true },
     college: { type: String, trim: true },
+    course: { type: String, trim: true , enum: ["engineering", "bhm&ct", "b-pharma", "bsc-n","bpt", "baslp", "diploma", "bba","dmlt", "gnm", "rac", "bsfi","mit", "mtech", "mba", "d-pharma", "anm", "post-basic-n"] },
     isTeacher: { type: Boolean, default: false },
     isStudent: { type: Boolean, default: false },
     events: [{ type: Schema.ObjectId, ref: "Event" }],
@@ -38,5 +37,3 @@ let Student = new Schema(
 );
 
 module.exports = mongoose.model("Student", Student);
-
-

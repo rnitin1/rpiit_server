@@ -26,6 +26,7 @@ Route.post("/UserComplaint", Controller.Student.UserComplaint);
 Route.post("/getComplaint", Controller.Student.getComplaint);
 Route.post("/userSuggestion", Controller.Student.userSuggestion);
 Route.post("/addAlumini", Controller.Student.addAlumini);
+Route.post("/forgotPassword", Controller.Student.forgotPassword);
 Route.post("/getResume", Controller.Student.getResume);
 Route.post("/updateResume/:id", Controller.Student.updateResume);
 

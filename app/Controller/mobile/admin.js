@@ -4,7 +4,8 @@ const universalFunction = require("../../UniversalFuntions"),
   config = require("../../config"),
   validations = require("../../Validation");
 const { sendMail } = require("../../utils/sendMail");
-let path = "http://3.12.68.246:8000/uploader/"
+let path = "http://3.12.68.246:8000/uploader/";
+
 
 exports.login = async (req, res) => {
   try {
@@ -42,6 +43,7 @@ exports.login = async (req, res) => {
     return console.log("ERROR", err);
   }
 };
+
 exports.addStudent = async (req, res) => {
   try {
     let {
@@ -332,8 +334,11 @@ exports.updateStudent = async (req, res) => {
 
 exports.addAnnouncement = async (req, res) => {
   try {
-    let { title, date, description,url } = req.body;
-    let saveData = await db.saveData(Model.Announcement, { ...req.body , image :req.file?path+ req.file.filename:""});
+    let { title, date, description, url } = req.body;
+    let saveData = await db.saveData(Model.Announcement, {
+      ...req.body,
+      image: req.file ? path + req.file.filename : "",
+    });
     res.status(200).send({
       data: saveData,
       customMessage: "OK",
@@ -346,19 +351,111 @@ exports.addAnnouncement = async (req, res) => {
   }
 };
 
-
-exports.changeSemester = (req , res)=>{
+exports.changeSemester = async (req, res) => {
   try {
-    let {branch} = req.body
-    if (branch === "engineering" || branch === "bhm&ct" || branch === "b-pharma"|| branch === "bsc-n"|| branch === "bpt"|| branch === "baslp"|| branch === "bpharma"){
+    let { branch } = req.body;
+    if (
+      branch === "engineering" ||
+      branch === "bhm&ct" ||
+      branch === "b-pharma" ||
+      branch === "bsc-n" ||
+      branch === "bpt" ||
+      branch === "baslp"
+    ) {
+      console.log("comming 1");
+      let changeSemester = await db.updateMany(
+        Model.Student,
+        { semester: { $lt: 8 } },
+        { $inc: { semester: 1 } },
+        { new: true }
+      );
+      await db.updateMany(
+        Model.Student,
+        { semester: { $gte: 7 } },
+        { isFinalYear: true },
+        { new: true }
+      );
+      return res.send({
+        statusCode: 200,
+        message: "ok",
+        data: changeSemester,
+      });
+    }
+    if (
+      branch === "diploma" ||
+      branch === "bba" ||
+      branch === "dmlt" ||
+      branch === "gnm" ||
+      branch === "rac" ||
+      branch === "bsfi" ||
+      branch === "mit"
+    ) {
+      console.log("comming 2");
+      let changeSemester = await db.updateMany(
+        Model.Student,
+        { semester: { $lt: 6 } },
+        { $inc: { semester: 1 } },
+        { new: true }
+      );
+      await db.updateMany(
+        Model.Student,
+        { semester: { $gte: 5 } },
+        { isFinalYear: true },
+        { new: true }
+      );
+      return res.send({
+        statusCode: 200,
+        message: "ok",
+        data: changeSemester,
+      });
+    }
+    if (
+      branch === "mtech" ||
+      branch === "mba" ||
+      branch === "d-pharma" ||
+      branch === "anm" ||
+      branch === "post-basic-n"
+    ) {
+      console.log("comming 3");
 
+      let changeSemester = await db.updateMany(
+        Model.Student,
+        { semester: { $lt: 4 } },
+        { $inc: { semester: 1 } },
+        { new: true }
+      );
+      await db.updateMany(
+        Model.Student,
+        { semester: { $gte: 2 } },
+        { isFinalYear: true },
+        { new: true }
+      );
+      return res.send({
+        statusCode: 200,
+        message: "ok",
+        data: changeSemester,
+      });
     }
-    if (branch === "diploma" || branch === "bba" || branch === "dmlt"|| branch === "gnm"|| branch === "rac"|| branch === "bsfi"|| branch === "mit"){
+    }catch (err) {
+      res.status(401).send(err);
+      return console.log("ERROR", err);
     }
-    if (branch === "mtech" || branch === "mba" || branch === "d-pharma"|| branch === "anm"|| branch === "post-basic-n"){
-    }
+  };
+
+
+exports.getAnnouncement = async (req, res) => {
+  try {
+    let announcement = await db.getData(Model.Announcement);
+    if (!announcement)
+      return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
+    return res.status(200).send({
+      data: announcement,
+      customMessage: "Successfull",
+      statusCode: 200,
+    });
   } catch (err) {
     res.status(401).send(err);
     return console.log("ERROR", err);
   }
-}
+};
+
