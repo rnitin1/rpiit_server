@@ -28,6 +28,7 @@ Route.post("/userSuggestion", Controller.Student.userSuggestion);
 Route.post("/addAlumini", Controller.Student.addAlumini);
 Route.post("/forgotPassword", Controller.Student.forgotPassword);
 Route.post("/getResume", Controller.Student.getResume);
+Route.post("/getEventByType", Controller.Student.getEventByType);
 Route.post("/updateResume/:id", Controller.Student.updateResume);
 
 module.exports = Route;

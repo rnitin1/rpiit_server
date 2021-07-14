@@ -556,3 +556,17 @@ exports.getResume = async (req, res) => {
     return console.log("ERROR", err);
   }
 };
+
+exports.getEventByType = async (req, res) => {
+  try {
+    let getData = await db.getData(Model.Event, { eventType: req.body.eventType });
+    res.status(200).send({
+      data: getData,
+      customMessage: "ok",
+      statusCode: 200,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+};
