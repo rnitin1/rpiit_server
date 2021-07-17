@@ -6,7 +6,6 @@ const universalFunction = require("../../UniversalFuntions"),
 const { sendMail } = require("../../utils/sendMail");
 let path = "http://3.12.68.246:8000/uploader/";
 
-
 exports.login = async (req, res) => {
   try {
     console.log(req.body);
@@ -61,6 +60,7 @@ exports.addStudent = async (req, res) => {
       semester,
       college,
       isTeacher,
+      course,
       isStudent,
     } = req.body;
 
@@ -89,9 +89,11 @@ exports.addStudent = async (req, res) => {
       college,
       isTeacher,
       isStudent,
+      course,
       isVeriFied: true,
       password: hashPassword,
     };
+    let subject = "Your account password ";
     await sendMail(email, subject, password).then(async (res) => {
       await User.update({ email }, dataToSave, { new: true, lean: true });
     });
@@ -436,12 +438,11 @@ exports.changeSemester = async (req, res) => {
         data: changeSemester,
       });
     }
-    }catch (err) {
-      res.status(401).send(err);
-      return console.log("ERROR", err);
-    }
-  };
-
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+};
 
 exports.getAnnouncement = async (req, res) => {
   try {
@@ -459,3 +460,12 @@ exports.getAnnouncement = async (req, res) => {
   }
 };
 
+
+exports.yearBook = async (req , res) =>{
+  try {
+    
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+}

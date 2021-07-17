@@ -240,7 +240,6 @@ exports.getStudent = async (req, res) => {
           { name: { $regex: req.body.search, $options: "i" } },
           { phoneNumber: req.body.search },
           { email: req.body.search },
-          { _id: req.body.search },
         ],
         isVeriFied:true
       };
@@ -568,5 +567,65 @@ exports.getEventByType = async (req, res) => {
   } catch (err) {
     res.status(401).send(err);
     return console.log("ERROR", err);
+  }
+};
+
+
+// exports.changePassword = async (req,res) => {
+//   try {
+//     let {studentId , n}
+    
+//   } catch (err) {
+//     res.status(401).send(err);
+//     return console.log("ERROR", err);
+//   }
+// }
+exports.changePassword = async (req, res) => {
+  try {
+  
+    let payload = req.body;
+    let criteria = {
+      _id:payload.studentId,
+    };
+    let user = await db.findOne(Model.Student, criteria, {}, {});
+    if (!user)
+      return res.send({
+        statusCode: 401,
+        message: "Unauthorized",
+      });
+    let checkPassword = await bcrypt.compare(
+      payload.oldPassword,
+      user.password
+    );
+    if (!checkPassword)
+      return res.send(
+       {
+         message:"incorrect password ",
+         statusCode:406
+       }
+      );
+    if (payload.oldPassword == payload.newPassword)
+      return res.send({
+        message:"Same password ",
+        statusCode:406
+      });
+    if (payload.newPassword == payload.confirmPassword) {
+      let hashPassword = await bcrypt.hash(payload.newPassword, 10);
+     await db.update(Model.Student , {_id:payload.studentId} , {$set:{password:hashPassword}})
+
+      return res.send({
+        statusCode: 200,
+        customMessage: "successfully changed password",
+      });
+    }
+    return res.send(
+    {
+      message :"incorrect  confirm password",
+      statusCode:200
+    }
+    );
+  } catch (err) {
+    console.log("===============  Error ============== ", err);
+    res.send(err);
   }
 };

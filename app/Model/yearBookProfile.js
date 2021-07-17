@@ -23,9 +23,13 @@ let YearBook = new Schema(
     q7: { type: String, trim: true },
     isTeacher: { type: Boolean, default: false },
     studentId: [{ type: Schema.ObjectId, ref: "Student" }],
+    comments:[{
+      studentId:{type: Schema.ObjectId, ref: "Student" },
+      Comment:String
+    }],
 
     /* ******************************* important point ************************************ */
-
+    
     loginTime: { type: Number, default: 0 },
     isBlocked: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false },

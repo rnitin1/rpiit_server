@@ -11,7 +11,6 @@ let questionnaire = [
   },
 ];
 
-
 let Event = new Schema(
   {
     title: { type: String, default: "", trim: true },
@@ -24,7 +23,10 @@ let Event = new Schema(
     image: { type: String },
     description: { type: String },
     url: { type: String },
-    eventType: {type: String,enum: ["social", "cultural", "sports", "trips"]},
+    eventType: {
+      type: String,
+      enum: ["social", "cultural", "sports", "trips", "company"],
+    },
     studentId: [{ type: Schema.ObjectId, ref: "Student" }],
     creatorId: { type: Schema.ObjectId, ref: "Student" },
     isFree: { type: Boolean, default: false },
@@ -41,7 +43,6 @@ let Event = new Schema(
 );
 
 module.exports = mongoose.model("Event", Event);
-
 
 // is applied(boolean)
 // roll number
