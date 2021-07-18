@@ -4,17 +4,15 @@ const universalFunction = require("../../UniversalFuntions"),
   config = require("../../config"),
   validations = require("../../Validation");
 const { sendMail } = require("../../utils/sendMail");
-let path = "http://3.12.68.246:8000/uploader/";
+let path = "http://localhost:8000/uploader/";
 
 exports.login = async (req, res) => {
   try {
-    console.log(req.body);
     let { email, password } = req.body;
     let searchObj = {
       email,
     };
     let studentData = await db.findOne(Model.Admin, searchObj);
-    console.log(studentData);
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_EMAIL);
     let verifyPassword = await universalFunction.Password.verifyPassword(
@@ -337,6 +335,7 @@ exports.updateStudent = async (req, res) => {
 exports.addAnnouncement = async (req, res) => {
   try {
     let { title, date, description, url } = req.body;
+    console.log({ title, date, description, url , image:req.file});
     let saveData = await db.saveData(Model.Announcement, {
       ...req.body,
       image: req.file ? path + req.file.filename : "",

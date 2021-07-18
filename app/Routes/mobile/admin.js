@@ -19,5 +19,8 @@ Route.post(
   Controller.Admin.addAnnouncement
 );
 Route.get("/getAnnouncement", Controller.Admin.getAnnouncement);
+Route.get("/getAllSuggestion", Controller.Admin.getAllSuggestion);
+
+
 
 module.exports = Route;
