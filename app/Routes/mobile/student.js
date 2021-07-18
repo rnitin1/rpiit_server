@@ -34,6 +34,9 @@ Route.post("/getEventByType", Controller.Student.getEventByType);
 Route.post("/updateResume/:id", Controller.Student.updateResume);
 Route.post("/addYearBook", Controller.Student.addYearBook);
 Route.post("/giveCommentToFinalYearStur", Controller.Student.giveCommentToFinalYearStur);
+Route.post("/applyEvent", Controller.Student.applyEvent);
+
+
 
 
 module.exports = Route;

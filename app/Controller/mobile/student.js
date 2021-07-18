@@ -5,7 +5,7 @@ const universalFunction = require("../../UniversalFuntions"),
   randomstring = require("randomstring");
 const { sendMail } = require("../../utils/sendMail");
 
-let path = "http://3.12.68.246:8000/uploader/";
+let path = "http://localhost:8000/uploader/";
 
 exports.signup = async (req, res) => {
   try {
@@ -462,9 +462,10 @@ exports.addEvent = async (req, res) => {
       eventType,
       deviceType,
       creatorId,
+      position
       // deviceType,
     } = req.body;
-
+console.log("req.bodyasdasd",req.body,"image",req.file)
     let dataToSave = {
       title,
       coordinator,
@@ -474,6 +475,7 @@ exports.addEvent = async (req, res) => {
       description,
       url,
       eventType,
+      position
     };
     if (deviceType === "mobile") {
       dataToSave.image = image;

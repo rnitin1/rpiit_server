@@ -38,6 +38,7 @@ let Event = new Schema(
     isDeleted: { type: Boolean, default: false },
     isNotificationEnabled: { type: Boolean, default: true },
     created_on: { type: Date, default: Date.now() },
+    position:{ type: String },
   },
   { versionKey: false }
 );
