@@ -19,6 +19,5 @@ Route.post(
   Controller.Admin.addAnnouncement
 );
 Route.get("/getAnnouncement", Controller.Admin.getAnnouncement);
-Route.get("/yearBook", Controller.Admin.yearBook);
 
 module.exports = Route;

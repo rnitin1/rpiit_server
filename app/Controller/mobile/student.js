@@ -2,10 +2,10 @@ const universalFunction = require("../../UniversalFuntions"),
   db = require("../../services/dboperations"),
   Model = require("../../Model"),
   config = require("../../config"),
-  randomstring = require("randomstring")
+  randomstring = require("randomstring");
 const { sendMail } = require("../../utils/sendMail");
 
-let path = "http://3.12.68.246:8000/uploader/"
+let path = "http://3.12.68.246:8000/uploader/";
 
 exports.signup = async (req, res) => {
   try {
@@ -76,10 +76,10 @@ exports.login = async (req, res) => {
   try {
     let { field, password, deviceToken, deviceType } = req.body;
     let searchObj = {
-      $or: [{email:field}, {phoneNumber:field}],
+      $or: [{ email: field }, { phoneNumber: field }],
     };
-    let studentData = await db.findOne(Model.Student,  searchObj );
-    if (!studentData )
+    let studentData = await db.findOne(Model.Student, searchObj);
+    if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_EMAIL);
     let verifyPassword = await universalFunction.Password.verifyPassword(
       password,
@@ -179,15 +179,15 @@ exports.addResume = async (req, res) => {
 exports.addMagzine = async (req, res) => {
   try {
     let { title, image, author, description, studentId } = req.body;
-    console.log(req.file , req.body);
+    console.log(req.file, req.body);
 
     let dataToSave = {
       title,
-      image, 
+      image,
       author,
-      description, 
+      description,
       studentId,
-      emagazine:req.file ? path + req.file.filename : "",
+      emagazine: req.file ? path + req.file.filename : "",
     };
     let saveData = await db.saveData(Model.Emagzines, dataToSave);
     res.status(200).send({
@@ -231,6 +231,7 @@ exports.getOneMagzine = async (req, res) => {
 
 exports.getStudent = async (req, res) => {
   try {
+    console.log(req.body);
     const limit = parseInt(req.body.limit); // Make sure to parse the limit to number
     const skip = parseInt(req.body.skip); // Make sure to parse the skip to number
     let searchObj = {};
@@ -241,7 +242,7 @@ exports.getStudent = async (req, res) => {
           { phoneNumber: req.body.search },
           { email: req.body.search },
         ],
-        isVeriFied:true
+        isVerified: true,
       };
     }
     let count = await Model.Student.countDocuments(searchObj);
@@ -362,19 +363,20 @@ exports.forgotPassword = async (req, res) => {
     let code = randomstring.generate(8);
     let password = code.toUpperCase();
     let dataToSave = {
-      password:  await universalFunction.Password.getPassword(password)
-      
+      password: await universalFunction.Password.getPassword(password),
     };
     // let template = await forgotPasswordTemplate(password);
     let subject = "Reset Password";
-    console.log("Above")
-     sendMail1(email, subject, password).then(async (res) => {
-      await db.update(Model.Student ,{ email }, dataToSave, { new: true, lean: true });
+    console.log("Above");
+    sendMail1(email, subject, password).then(async (res) => {
+      await db.update(Model.Student, { email }, dataToSave, {
+        new: true,
+        lean: true,
+      });
     });
     res.status(200).send({ message: "Password has been sent to your mail" });
-    
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.send(err);
   }
 };
@@ -459,7 +461,7 @@ exports.addEvent = async (req, res) => {
       url,
       eventType,
       deviceType,
-      creatorId
+      creatorId,
       // deviceType,
     } = req.body;
 
@@ -476,7 +478,6 @@ exports.addEvent = async (req, res) => {
     if (deviceType === "mobile") {
       dataToSave.image = image;
       dataToSave.creatorId = creatorId;
-
     } else {
       dataToSave.image = path + req.file.filename;
       dataToSave.isVerify = true;
@@ -544,7 +545,9 @@ exports.applyEvent = async (req, res) => {
 
 exports.getResume = async (req, res) => {
   try {
-    let getData = await db.findOne(Model.Resume, { studentId: req.body.studentId });
+    let getData = await db.findOne(Model.Resume, {
+      studentId: req.body.studentId,
+    });
     res.status(200).send({
       data: getData,
       customMessage: "ok",
@@ -558,7 +561,9 @@ exports.getResume = async (req, res) => {
 
 exports.getEventByType = async (req, res) => {
   try {
-    let getData = await db.getData(Model.Event, { eventType: req.body.eventType });
+    let getData = await db.getData(Model.Event, {
+      eventType: req.body.eventType,
+    });
     res.status(200).send({
       data: getData,
       customMessage: "ok",
@@ -570,22 +575,11 @@ exports.getEventByType = async (req, res) => {
   }
 };
 
-
-// exports.changePassword = async (req,res) => {
-//   try {
-//     let {studentId , n}
-    
-//   } catch (err) {
-//     res.status(401).send(err);
-//     return console.log("ERROR", err);
-//   }
-// }
 exports.changePassword = async (req, res) => {
   try {
-  
     let payload = req.body;
     let criteria = {
-      _id:payload.studentId,
+      _id: payload.studentId,
     };
     let user = await db.findOne(Model.Student, criteria, {}, {});
     if (!user)
@@ -598,34 +592,164 @@ exports.changePassword = async (req, res) => {
       user.password
     );
     if (!checkPassword)
-      return res.send(
-       {
-         message:"incorrect password ",
-         statusCode:406
-       }
-      );
+      return res.send({
+        message: "incorrect password ",
+        statusCode: 406,
+      });
     if (payload.oldPassword == payload.newPassword)
       return res.send({
-        message:"Same password ",
-        statusCode:406
+        message: "Same password ",
+        statusCode: 406,
       });
     if (payload.newPassword == payload.confirmPassword) {
       let hashPassword = await bcrypt.hash(payload.newPassword, 10);
-     await db.update(Model.Student , {_id:payload.studentId} , {$set:{password:hashPassword}})
+      await db.update(
+        Model.Student,
+        { _id: payload.studentId },
+        { $set: { password: hashPassword } }
+      );
 
       return res.send({
         statusCode: 200,
         customMessage: "successfully changed password",
       });
     }
-    return res.send(
-    {
-      message :"incorrect  confirm password",
-      statusCode:200
-    }
-    );
+    return res.send({
+      message: "incorrect  confirm password",
+      statusCode: 200,
+    });
   } catch (err) {
     console.log("===============  Error ============== ", err);
     res.send(err);
+  }
+};
+
+exports.addYearBook = async (req, res) => {
+  try {
+    let {
+      name,
+      email,
+      phoneNumber,
+      rollNumber,
+      address,
+      dob,
+      branch,
+      stream,
+      image,
+      semester,
+      q1,
+      q2,
+      q3,
+      q4,
+      q5,
+      q6,
+      q7,
+      studentId,
+    } = req.body;
+
+    let studentData = await db.populateData(
+      Model.Student,
+      {
+        _id: studentId,
+        isFinalYear: true,
+      },
+      {},
+      {},
+      "events"
+    );
+    let yearBookData = await db.populateData(
+      Model.YearBook,
+      {
+        studentId,email
+      },
+      {},
+      {},
+      "events"
+    );
+    if (yearBookData)
+    return res.send({
+      statusCode: 406,
+      message: "Already added",
+    });
+    if (!studentData)
+      return res.send({
+        statusCode: 404,
+        message: "Not found",
+      });
+
+    let saveData = await db.saveData(Model.YearBook, {
+      ...req.body,
+    });
+
+    res.send({
+      data: saveData,
+      message: "ok",
+      statusCode: 200,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+};
+
+exports.getFinalYearStudent = async (req, res) => {
+  try {
+    console.log(req.body);
+    const limit = parseInt(req.body.limit); // Make sure to parse the limit to number
+    const skip = parseInt(req.body.skip); // Make sure to parse the skip to number
+    let searchObj = {};
+    if (req.body.search) {
+      searchObj = {
+        $or: [
+          { name: { $regex: req.body.search, $options: "i" } },
+          { phoneNumber: req.body.search },
+          { email: req.body.search },
+        ],
+        isVerified: true,
+        isFinalYear: true,
+      };
+    }
+    let count = await Model.Student.countDocuments(searchObj);
+    let users = await Model.Student.find(searchObj).skip(skip).limit(limit);
+    res.status(200).send({
+      data: users,
+      customMessage: "OK",
+      statusCode: 200,
+      count,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+};
+
+exports.giveCommentToFinalYearStur = async (req, res) => {
+  try {
+    let { finalYearStudentId, studentId, comment } = req.body;
+    let yearBookData = await db.findOne(Model.YearBook, { studentId: finalYearStudentId });
+    console.log({yearBookData ,studentId, comment });
+    let comments = yearBookData.comments;
+    if (comment) {
+      comments.push({
+        studentId,
+        comment,
+      });
+    }
+    let updateData = await db.findAndUpdate(
+      Model.YearBook,
+      { studentId: finalYearStudentId },
+      {
+        comments,
+      },
+      {new:true}
+    );
+    res.send({
+      statusCode:200,
+      message:"ok",
+      data:updateData
+    })
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
   }
 };

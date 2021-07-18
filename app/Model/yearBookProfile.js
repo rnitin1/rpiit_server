@@ -5,8 +5,8 @@ let YearBook = new Schema(
   {
     name: { type: String, default: "", trim: true },
     email: { type: String, trim: true, default: "" },
-    phoneNumber: { type: Number },
-    rollNumber: { type: Number },
+    phoneNumber: { type: String },
+    rollNumber: { type: String },
     address: { type: String, trim: true },
     dob: { type: Date },
     branch: { type: String, trim: true },
@@ -22,10 +22,10 @@ let YearBook = new Schema(
     q6: { type: String, trim: true },
     q7: { type: String, trim: true },
     isTeacher: { type: Boolean, default: false },
-    studentId: [{ type: Schema.ObjectId, ref: "Student" }],
+    studentId: { type: Schema.ObjectId, ref: "Student" },
     comments:[{
       studentId:{type: Schema.ObjectId, ref: "Student" },
-      Comment:String
+      comment:String
     }],
 
     /* ******************************* important point ************************************ */
