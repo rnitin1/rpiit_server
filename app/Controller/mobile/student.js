@@ -3,7 +3,7 @@ const universalFunction = require("../../UniversalFuntions"),
   Model = require("../../Model"),
   config = require("../../config"),
   randomstring = require("randomstring");
-const { sendMail } = require("../../utils/sendMail");
+const { sendMail1 } = require("../../utils/sendMail");
 
 let path = "http://localhost:8000/uploader/";
 
@@ -462,7 +462,8 @@ exports.addEvent = async (req, res) => {
       eventType,
       deviceType,
       creatorId,
-      position
+      position,
+      price,
       // deviceType,
     } = req.body;
 console.log("req.bodyasdasd",req.body,"image",req.file)
@@ -475,7 +476,8 @@ console.log("req.bodyasdasd",req.body,"image",req.file)
       description,
       url,
       eventType,
-      position
+      position,
+      price
     };
     if (deviceType === "mobile") {
       dataToSave.image = image;
