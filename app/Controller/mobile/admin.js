@@ -1,10 +1,12 @@
+const { Student } = require("../../Model");
 const universalFunction = require("../../UniversalFuntions"),
   db = require("../../services/dboperations"),
   Model = require("../../Model"),
   config = require("../../config"),
-  validations = require("../../Validation");
-const { sendMail } = require("../../utils/sendMail");
-let path = "http://localhost:8000/uploader/";
+  validations = require("../../Validation"),
+  randomstring = require("randomstring");
+const { sendMail1 } = require("../../utils/sendMail");
+let path = "http://3.12.68.246:8000/uploader/";
 
 exports.login = async (req, res) => {
   try {
@@ -61,7 +63,7 @@ exports.addStudent = async (req, res) => {
       course,
       isStudent,
     } = req.body;
-
+    console.log("body",req.body);
     let criteria = { email };
     let checkStudent = await db.findOne(Model.Student, criteria);
     if (checkStudent && checkStudent.isVerified === true)
@@ -92,8 +94,8 @@ exports.addStudent = async (req, res) => {
       password: hashPassword,
     };
     let subject = "Your account password ";
-    await sendMail(email, subject, password).then(async (res) => {
-      await User.update({ email }, dataToSave, { new: true, lean: true });
+    await sendMail1(email, subject, password).then(async (res) => {
+      await Student.update({ email }, dataToSave, { new: true, lean: true });
     });
     let saveData = await db.saveData(Model.Student, dataToSave);
     res.status(200).send({
@@ -311,7 +313,7 @@ exports.updateStudent = async (req, res) => {
     if (email) {
       let code = randomstring.generate(8);
       let password = code.toUpperCase();
-      await sendMail(email, subject, password).then(async (res) => {
+      await sendMail1(email, subject, password).then(async (res) => {
         await User.update({ email }, dataToSave, { new: true, lean: true });
       });
       dataToSet.email = email;
