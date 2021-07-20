@@ -247,6 +247,9 @@ exports.replyToSuggetion = async (req, res) => {
   }
 };
 
+
+
+
 exports.deleteMagzines = async (req, res) => {
   try {
     let { magzineId } = req.params;
@@ -265,6 +268,7 @@ exports.deleteMagzines = async (req, res) => {
     return console.log("ERROR", err);
   }
 };
+
 
 exports.getAllAlumini = async (req, res) => {
   try {
@@ -461,3 +465,22 @@ exports.getAnnouncement = async (req, res) => {
   }
 };
 
+exports.deleteAnnouncement = async (req, res) => {
+  console.log("req of deleteAnnouncement",req)
+  try {
+    let { eventId } = req.params;
+    let deleteAnnouncement = await db.remove(Model.Announcement, { _id: anouncementId });
+    if (!deleteAnnouncement)
+      return res.send({
+        statusCode: 400,
+        message: "Something went wrong",
+      });
+    return res.send({
+      statusCode: 200,
+      message: "successfully deleted",
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    //return console.log("ERROR", err);
+  }
+};
