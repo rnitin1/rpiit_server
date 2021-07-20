@@ -4,8 +4,10 @@ const universalFunction = require("../../UniversalFuntions"),
   config = require("../../config"),
   randomstring = require("randomstring");
 const { sendMail1 } = require("../../utils/sendMail");
-
+const bcrypt = require ("bcryptjs")
 let path = "http://3.12.68.246:8000/uploader/";
+// let path = "http://localhost:8000/uploader/";
+
 
 exports.signup = async (req, res) => {
   try {
@@ -497,6 +499,27 @@ console.log("req.bodyasdasd",req.body,"image",req.file)
     return console.log("ERROR", err);
   }
 };
+
+exports.deleteEvent = async (req, res) => {
+  console.log("req of delevent",req)
+  try {
+    let { eventId } = req.params;
+    let deleteEvent = await db.remove(Model.Event, { _id: eventId });
+    if (!deleteEvent)
+      return res.send({
+        statusCode: 400,
+        message: "Something went wrong",
+      });
+    return res.send({
+      statusCode: 200,
+      message: "successfully deleted",
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    //return console.log("ERROR", err);
+  }
+};
+
 
 exports.applyEvent = async (req, res) => {
   try {
