@@ -37,6 +37,7 @@ Route.post("/updateResume/:id", Controller.Student.updateResume);
 Route.post("/addYearBook", Controller.Student.addYearBook);
 Route.post("/giveCommentToFinalYearStur", Controller.Student.giveCommentToFinalYearStur);
 Route.post("/applyEvent", Controller.Student.applyEvent);
+Route.post("/getOneYearBook", Controller.Student.getOneYearBook);
 
 
 
