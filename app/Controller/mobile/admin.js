@@ -163,7 +163,7 @@ exports.getOneStudent = async (req, res) => {
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
-      data: studentData,
+      data: studentData[0],
       customMessage: "Successfully Verified",
       statusCode: 200,
     });
