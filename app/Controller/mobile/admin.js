@@ -468,8 +468,8 @@ exports.getAnnouncement = async (req, res) => {
 exports.deleteAnnouncement = async (req, res) => {
   console.log("req of deleteAnnouncement",req)
   try {
-    let { eventId } = req.params;
-    let deleteAnnouncement = await db.remove(Model.Announcement, { _id: anouncementId });
+    let { id } = req.params;
+    let deleteAnnouncement = await db.remove(Model.Announcement, { _id: id });
     if (!deleteAnnouncement)
       return res.send({
         statusCode: 400,
