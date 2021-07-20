@@ -4,8 +4,10 @@ const universalFunction = require("../../UniversalFuntions"),
   config = require("../../config"),
   randomstring = require("randomstring");
 const { sendMail1 } = require("../../utils/sendMail");
-
+const bcrypt = require ("bcryptjs")
 let path = "http://3.12.68.246:8000/uploader/";
+// let path = "http://localhost:8000/uploader/";
+
 
 exports.signup = async (req, res) => {
   try {

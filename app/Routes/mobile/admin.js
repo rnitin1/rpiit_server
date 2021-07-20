@@ -20,7 +20,7 @@ Route.post(
   Controller.Admin.addAnnouncement
 );
 Route.get("/getAnnouncement", Controller.Admin.getAnnouncement);
-Route.delete("/deleteAnnouncement/:announcementId", Controller.Admin.deleteAnnouncement);
+Route.delete("/deleteAnnouncement/:id", Controller.Admin.deleteAnnouncement);
 
 Route.get("/getAllSuggestion", Controller.Admin.getAllSuggestion);
 
