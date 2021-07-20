@@ -4,10 +4,9 @@ const universalFunction = require("../../UniversalFuntions"),
   config = require("../../config"),
   randomstring = require("randomstring");
 const { sendMail1 } = require("../../utils/sendMail");
-const bcrypt = require ("bcryptjs")
+const bcrypt = require("bcryptjs");
 let path = "http://3.12.68.246:8000/uploader/";
 // let path = "http://localhost:8000/uploader/";
-
 
 exports.signup = async (req, res) => {
   try {
@@ -468,7 +467,7 @@ exports.addEvent = async (req, res) => {
       price,
       // deviceType,
     } = req.body;
-console.log("req.bodyasdasd",req.body,"image",req.file)
+    console.log("req.bodyasdasd", req.body, "image", req.file);
     let dataToSave = {
       title,
       coordinator,
@@ -479,7 +478,7 @@ console.log("req.bodyasdasd",req.body,"image",req.file)
       url,
       eventType,
       position,
-      price
+      price,
     };
     if (deviceType === "mobile") {
       dataToSave.image = image;
@@ -501,7 +500,7 @@ console.log("req.bodyasdasd",req.body,"image",req.file)
 };
 
 exports.deleteEvent = async (req, res) => {
-  console.log("req of delevent",req)
+  console.log("req of delevent", req);
   try {
     let { eventId } = req.params;
     let deleteEvent = await db.remove(Model.Event, { _id: eventId });
@@ -519,7 +518,6 @@ exports.deleteEvent = async (req, res) => {
     //return console.log("ERROR", err);
   }
 };
-
 
 exports.applyEvent = async (req, res) => {
   try {
@@ -687,17 +685,18 @@ exports.addYearBook = async (req, res) => {
     let yearBookData = await db.populateData(
       Model.YearBook,
       {
-        studentId,email
+        studentId,
+        email,
       },
       {},
       {},
       "events"
     );
     if (yearBookData)
-    return res.send({
-      statusCode: 406,
-      message: "Already added",
-    });
+      return res.send({
+        statusCode: 406,
+        message: "Already added",
+      });
     if (!studentData)
       return res.send({
         statusCode: 404,
@@ -753,8 +752,10 @@ exports.getFinalYearStudent = async (req, res) => {
 exports.giveCommentToFinalYearStur = async (req, res) => {
   try {
     let { finalYearStudentId, studentId, comment } = req.body;
-    let yearBookData = await db.findOne(Model.YearBook, { studentId: finalYearStudentId });
-    console.log({yearBookData ,studentId, comment });
+    let yearBookData = await db.findOne(Model.YearBook, {
+      studentId: finalYearStudentId,
+    });
+    console.log({ yearBookData, studentId, comment });
     let comments = yearBookData.comments;
     if (comment) {
       comments.push({
@@ -768,13 +769,35 @@ exports.giveCommentToFinalYearStur = async (req, res) => {
       {
         comments,
       },
-      {new:true}
+      { new: true }
     );
     res.send({
-      statusCode:200,
-      message:"ok",
-      data:updateData
-    })
+      statusCode: 200,
+      message: "ok",
+      data: updateData,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+};
+
+exports.getOneYearBook = async (req, res) => {
+  try {
+    let { finalYearStudentId } = req.body;
+    let yearBookData = await db.findOne(Model.YearBook, {
+      studentId: finalYearStudentId,
+    });
+    if (!yearBookData)  return res.send({
+      statusCode: 404,
+      message: "Not found",
+    });
+     
+    return res.send({
+      statusCode: 200,
+      message: "ok",
+      data: yearBookData,
+    });
   } catch (err) {
     res.status(401).send(err);
     return console.log("ERROR", err);

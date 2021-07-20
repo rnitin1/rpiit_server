@@ -340,12 +340,16 @@ exports.updateStudent = async (req, res) => {
 
 exports.addAnnouncement = async (req, res) => {
   try {
-    let { title, date, description, url } = req.body;
+    let { title, date, description, url , deviceType  , image} = req.body;
     console.log({ title, date, description, url , image:req.file});
-    let saveData = await db.saveData(Model.Announcement, {
-      ...req.body,
-      image: req.file ? path + req.file.filename : "",
-    });
+    let dataToSave = { title, date, description, url , deviceType  }
+    if (deviceType === "mobile"){
+      deviceType.image = image
+    }
+    if(req.file){
+      deviceType.image =  path + req.file.filename
+    }
+    let saveData = await db.saveData(Model.Announcement,dataToSave);
     res.status(200).send({
       data: saveData,
       customMessage: "OK",
