@@ -20,6 +20,10 @@ Route.post(
   Controller.Admin.addAnnouncement
 );
 Route.get("/getAnnouncement", Controller.Admin.getAnnouncement);
-Route.get("/yearBook", Controller.Admin.yearBook);
+Route.delete("/deleteAnnouncement/:id", Controller.Admin.deleteAnnouncement);
+
+Route.get("/getAllSuggestion", Controller.Admin.getAllSuggestion);
+
+
 
 module.exports = Route;

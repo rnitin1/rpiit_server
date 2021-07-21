@@ -16,12 +16,15 @@ Route.post(
   multer.upload.single("image"),
   Controller.Student.addEvent
 );
+Route.delete("/deleteEvent/:eventId", Controller.Student.deleteEvent);
+
 // Route.post(
 //   "/addEvent",
 //   multer.upload.single("image"),
 //   Controller.Student.addEvent
 // );
 Route.post("/getStudent", Controller.Student.getStudent);
+Route.post("/getFinalYearStudent", Controller.Student.getFinalYearStudent);
 Route.post("/UserComplaint", Controller.Student.UserComplaint);
 Route.post("/getComplaint", Controller.Student.getComplaint);
 Route.post("/userSuggestion", Controller.Student.userSuggestion);
@@ -31,5 +34,11 @@ Route.post("/getResume", Controller.Student.getResume);
 Route.post("/changePassword", Controller.Student.changePassword);
 Route.post("/getEventByType", Controller.Student.getEventByType);
 Route.post("/updateResume/:id", Controller.Student.updateResume);
+Route.post("/addYearBook", Controller.Student.addYearBook);
+Route.post("/giveCommentToFinalYearStur", Controller.Student.giveCommentToFinalYearStur);
+Route.post("/applyEvent", Controller.Student.applyEvent);
+
+
+
 
 module.exports = Route;

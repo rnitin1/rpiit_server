@@ -20,4 +20,5 @@ module.exports = {
   Suggestion: require("./suggestion"),
   Alumini: require("./alumini"),
   Announcement: require("./annoucement"),
+  YearBook: require("./yearBookProfile"),
 };
