@@ -287,7 +287,7 @@ exports.getComplaint = async (req, res) => {
       };
     }
     let count = await Model.Complaint.countDocuments(complaintObj);
-    let users = await Model.Complaint.findOne(complaintObj);
+    let users = await Model.Complaint.find(complaintObj);
     // .skip(skip).limit(limit);
     res.status(200).send({
       data: users,
