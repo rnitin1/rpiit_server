@@ -6,7 +6,8 @@ const express = require("express"),
 
 Route.post("/verifyStudent", Controller.Admin.verifyStudent);
 Route.post("/login", Controller.Admin.login);
-Route.post("/addStudent", Controller.Admin.addStudent);
+Route.post("/updateStudent/:id", Controller.Admin.updateStudent);
+Route.post("/verifyEvent", Controller.Admin.verifyEvent);
 
 Route.post("/updateStudent/:id", Controller.Admin.updateStudent);
 Route.get("/getAllStudent", Controller.Admin.getAllStudent);
@@ -23,6 +24,9 @@ Route.get("/getAnnouncement", Controller.Admin.getAnnouncement);
 Route.delete("/deleteAnnouncement/:id", Controller.Admin.deleteAnnouncement);
 
 Route.get("/getAllSuggestion", Controller.Admin.getAllSuggestion);
+Route.get("/getAllVerifiedStudent", Controller.Admin.getAllVerifiedStudent);
+
+
 
 
 

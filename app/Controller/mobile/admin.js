@@ -6,7 +6,9 @@ const universalFunction = require("../../UniversalFuntions"),
   validations = require("../../Validation"),
   randomstring = require("randomstring");
 const { sendMail1 } = require("../../utils/sendMail");
-let path = "http://3.12.68.246:8000/uploader/";
+// let path = "http://3.12.68.246:8000/uploader/";
+let path = "http://localhost:8000/uploader/";
+
 
 exports.login = async (req, res) => {
   try {
@@ -132,6 +134,8 @@ exports.verifyStudent = async (req, res) => {
     return console.log("ERROR", err);
   }
 };
+
+
 
 exports.getAllStudent = async (req, res) => {
   try {
@@ -486,5 +490,48 @@ exports.deleteAnnouncement = async (req, res) => {
   } catch (err) {
     res.status(401).send(err);
     //return console.log("ERROR", err);
+  }
+};
+
+
+exports.verifyEvent = async (req, res) => {
+  console.log(req.body,"inside verifyEvent");
+  try {
+    let { eventId } = req.body;
+    console.log(req.body);
+    let studentData = await db.findOne(Model.Event, { _id: eventId });
+    if (!studentData)
+      return res.send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_EMAIL);
+    let updateStudentData = await db.findAndUpdate(
+      Model.Event,
+      { _id: eventId },
+      { isVerify: true },
+      { new: true }
+    );
+    return res.status(200).send({
+      data: updateStudentData,
+      customMessage: "Successfully Verified",
+      statusCode: 200,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+};
+
+
+exports.getAllVerifiedStudent = async (req, res) => {
+  try {
+    let studentData = await db.getData(Model.Student , {isVerified:true});
+    if (!studentData)
+      return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
+    return res.status(200).send({
+      data: studentData,
+      customMessage: "Successfully Verified",
+      statusCode: 200,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
   }
 };
