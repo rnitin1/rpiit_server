@@ -692,7 +692,7 @@ exports.addYearBook = async (req, res) => {
       {},
       "events"
     );
-    if (yearBookData)
+    if (yearBookData.length >0)
       return res.send({
         statusCode: 406,
         message: "Already added",
