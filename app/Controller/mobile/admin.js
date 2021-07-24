@@ -344,10 +344,10 @@ exports.addAnnouncement = async (req, res) => {
     console.log({ title, date, description, url , image:req.file});
     let dataToSave = { title, date, description, url , deviceType  }
     if (deviceType === "mobile"){
-      deviceType.image = image
+      dataToSave.image = image
     }
     if(req.file){
-      deviceType.image =  path + req.file.filename
+      dataToSave.image =  path + req.file.filename
     }
     let saveData = await db.saveData(Model.Announcement,dataToSave);
     res.status(200).send({
