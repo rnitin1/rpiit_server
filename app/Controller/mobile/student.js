@@ -785,9 +785,10 @@ exports.giveCommentToFinalYearStur = async (req, res) => {
 exports.getOneYearBook = async (req, res) => {
   try {
     let { finalYearStudentId } = req.body;
-    let yearBookData = await db.findOne(Model.YearBook, {
+    let yearBookData = await db.populateData(Model.YearBook, {
       studentId: finalYearStudentId,
-    });
+    } , {},{},"studentId");
+    console.log({finalYearStudentId , yearBookData});
     if (!yearBookData)  return res.send({
       statusCode: 404,
       message: "Not found",
@@ -796,7 +797,7 @@ exports.getOneYearBook = async (req, res) => {
     return res.send({
       statusCode: 200,
       message: "ok",
-      data: yearBookData,
+      data: yearBookData.length>0 ? yearBookData[0]:{},
     });
   } catch (err) {
     res.status(401).send(err);
@@ -807,7 +808,7 @@ exports.getOneYearBook = async (req, res) => {
 exports.getAllYearBook = async (req, res) => {
   try {
     // let { finalYearStudentId } = req.body;
-    let yearBookData = await db.findOne(Model.YearBook);
+    let yearBookData = await db.populateData(Model.YearBook,{},{},{},"studentId");
     if (!yearBookData)  return res.send({
       statusCode: 404,
       message: "Not found",
@@ -820,6 +821,6 @@ exports.getAllYearBook = async (req, res) => {
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log("ERROR", err); 
   }
 };
