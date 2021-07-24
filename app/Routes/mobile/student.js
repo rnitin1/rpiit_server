@@ -39,6 +39,7 @@ Route.post("/giveCommentToFinalYearStur", Controller.Student.giveCommentToFinalY
 Route.post("/applyEvent", Controller.Student.applyEvent);
 Route.post("/getOneYearBook", Controller.Student.getOneYearBook);
 
+Route.get("/getAllYearBook", Controller.Student.getAllYearBook);
 
 
 

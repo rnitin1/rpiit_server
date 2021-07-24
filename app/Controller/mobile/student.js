@@ -692,6 +692,7 @@ exports.addYearBook = async (req, res) => {
       {},
       "events"
     );
+    console.log({yearBookData}) 
     if (yearBookData)
       return res.send({
         statusCode: 406,
@@ -788,6 +789,26 @@ exports.getOneYearBook = async (req, res) => {
     let yearBookData = await db.findOne(Model.YearBook, {
       studentId: finalYearStudentId,
     });
+    if (!yearBookData)  return res.send({
+      statusCode: 404,
+      message: "Not found",
+    });
+     
+    return res.send({
+      statusCode: 200,
+      message: "ok",
+      data: yearBookData,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+};
+
+exports.getAllYearBook = async (req, res) => {
+  try {
+    // let { finalYearStudentId } = req.body;
+    let yearBookData = await db.findOne(Model.YearBook);
     if (!yearBookData)  return res.send({
       statusCode: 404,
       message: "Not found",
