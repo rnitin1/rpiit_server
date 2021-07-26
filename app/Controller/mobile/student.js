@@ -287,7 +287,7 @@ exports.getComplaint = async (req, res) => {
       };
     }
     let count = await Model.Complaint.countDocuments(complaintObj);
-    let users = await Model.Complaint.findOne(complaintObj);
+    let users = await Model.Complaint.find(complaintObj).populate("studentId").populate("targetId");
     // .skip(skip).limit(limit);
     res.status(200).send({
       data: users,
@@ -692,7 +692,7 @@ exports.addYearBook = async (req, res) => {
       {},
       "events"
     );
-    if (yearBookData)
+    if (yearBookData.length >0)
       return res.send({
         statusCode: 406,
         message: "Already added",
@@ -785,9 +785,30 @@ exports.giveCommentToFinalYearStur = async (req, res) => {
 exports.getOneYearBook = async (req, res) => {
   try {
     let { finalYearStudentId } = req.body;
-    let yearBookData = await db.findOne(Model.YearBook, {
+    let yearBookData = await db.populateData(Model.YearBook, {
       studentId: finalYearStudentId,
+    } , {},{},"studentId");
+    console.log({finalYearStudentId , yearBookData});
+    if (!yearBookData)  return res.send({
+      statusCode: 404,
+      message: "Not found",
     });
+     
+    return res.send({
+      statusCode: 200,
+      message: "ok",
+      data: yearBookData.length>0 ? yearBookData[0]:{},
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+};
+
+exports.getAllYearBook = async (req, res) => {
+  try {
+    // let { finalYearStudentId } = req.body;
+    let yearBookData = await db.populateData(Model.YearBook,{},{},{},"studentId");
     if (!yearBookData)  return res.send({
       statusCode: 404,
       message: "Not found",
@@ -800,6 +821,6 @@ exports.getOneYearBook = async (req, res) => {
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log("ERROR", err); 
   }
 };
