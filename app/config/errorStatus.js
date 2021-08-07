@@ -100,7 +100,7 @@ let STATUS_MSG = {
         },
         ALREADY_EXISTS_EMAIL: {
             statusCode: 409,
-            customMessage: 'Email you have entered already exist. Please try with another email :)',
+            customMessage: 'Email or Phone number you have entered already exist. Please try with another email :)',
             type: 'ALREADY_EXISTS_EMAIL'
         }, 
         ALREADY_EXISTS_TRUCK: {

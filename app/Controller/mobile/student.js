@@ -35,7 +35,7 @@ exports.signup = async (req, res) => {
     //     customMessage: error.details[0].message,
     //     statusCode: 404,
     //   });
-    let criteria = { email };
+    let criteria = { $or: [{ email }, { phoneNumber }] };
     let checkStudent = await db.findOne(Model.Student, criteria);
     if (checkStudent && checkStudent.isVerified === true)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.ALREADY_EXISTS_EMAIL);
@@ -126,10 +126,52 @@ exports.login = async (req, res) => {
       return res
         .status(400)
         .send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_PASSWORD);
+    let dataToSave = {
+       deviceToken, deviceType 
+    }
+    let {course ,semester } = studentData
+    console.log({course});
+
+    if (
+      course === "engineering" ||
+      course === "bhm&ct" ||
+      course === "b-pharma" ||
+      course === "bsc-n" ||
+      course === "bpt" ||
+      course === "baslp"
+    ) {
+      if (semester === 7 || semester === 8) {
+        dataToSave.isFinalYear = true;
+      }
+    }
+    if (
+      course === "diploma" ||
+      course === "bba" ||
+      course === "dmlt" ||
+      course === "gnm" ||
+      course === "rac" ||
+      course === "bsfi" ||
+      course === "mit"
+    ) {
+      if (semester === 5 || semester === 6) {
+        dataToSave.isFinalYear = true;
+      }
+    }
+    if (
+      course === "mtech" ||
+      course === "mba" ||
+      course === "d-pharma" ||
+      course === "anm" ||
+      course === "post-basic-n"
+    ) {
+      if (semester === 3 || semester === 4) {
+        dataToSave.isFinalYear = true;
+      }
+    }
     let updateStudentData = await db.findAndUpdate(
       Model.Student,
       searchObj,
-      { deviceToken, deviceType },
+     dataToSave,
       { new: true }
     );
 
