@@ -6,8 +6,7 @@ const universalFunction = require("../../UniversalFuntions"),
   validations = require("../../Validation"),
   randomstring = require("randomstring");
 const { sendMail1 } = require("../../utils/sendMail");
-let path = "http://3.12.68.246:8000/uploader/";
-// let path = "http://localhost:8000/uploader/";
+let path = "https://api.appformersrpiit.co.in//uploader/";
 
 
 exports.login = async (req, res) => {
