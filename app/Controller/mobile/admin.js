@@ -32,6 +32,7 @@ exports.login = async (req, res) => {
       studentData._id,
       studentData.email
     );
+	  console.log("data",studentData);
     console.log("token", accessToken);
     return res.status(200).send({
       data: studentData,
