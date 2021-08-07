@@ -8,7 +8,6 @@ const universalFunction = require("../../UniversalFuntions"),
 const { sendMail1 } = require("../../utils/sendMail");
 let path = "https://api.appformersrpiit.co.in//uploader/";
 
-
 exports.login = async (req, res) => {
   try {
     let { email, password } = req.body;
@@ -64,7 +63,7 @@ exports.addStudent = async (req, res) => {
       course,
       isStudent,
     } = req.body;
-    console.log("body",req.body);
+    console.log("body", req.body);
     let criteria = { email };
     let checkStudent = await db.findOne(Model.Student, criteria);
     if (checkStudent && checkStudent.isVerified === true)
@@ -133,8 +132,6 @@ exports.verifyStudent = async (req, res) => {
     return console.log("ERROR", err);
   }
 };
-
-
 
 exports.getAllStudent = async (req, res) => {
   try {
@@ -250,9 +247,6 @@ exports.replyToSuggetion = async (req, res) => {
   }
 };
 
-
-
-
 exports.deleteMagzines = async (req, res) => {
   try {
     let { magzineId } = req.params;
@@ -271,7 +265,6 @@ exports.deleteMagzines = async (req, res) => {
     return console.log("ERROR", err);
   }
 };
-
 
 exports.getAllAlumini = async (req, res) => {
   try {
@@ -343,16 +336,16 @@ exports.updateStudent = async (req, res) => {
 
 exports.addAnnouncement = async (req, res) => {
   try {
-    let { title, date, description, url , deviceType  , image} = req.body;
-    console.log({ title, date, description, url , image:req.file});
-    let dataToSave = { title, date, description, url , deviceType  }
-    if (deviceType === "mobile"){
-      dataToSave.image = image
+    let { title, date, description, url, deviceType, image } = req.body;
+    console.log({ title, date, description, url, image: req.file });
+    let dataToSave = { title, date, description, url, deviceType };
+    if (deviceType === "mobile") {
+      dataToSave.image = image;
     }
-    if(req.file){
-      dataToSave.image =  path + req.file.filename
+    if (req.file) {
+      dataToSave.image = path + req.file.filename;
     }
-    let saveData = await db.saveData(Model.Announcement,dataToSave);
+    let saveData = await db.saveData(Model.Announcement, dataToSave);
     res.status(200).send({
       data: saveData,
       customMessage: "OK",
@@ -473,7 +466,7 @@ exports.getAnnouncement = async (req, res) => {
 };
 
 exports.deleteAnnouncement = async (req, res) => {
-  console.log("req of deleteAnnouncement",req)
+  console.log("req of deleteAnnouncement", req);
   try {
     let { id } = req.params;
     let deleteAnnouncement = await db.remove(Model.Announcement, { _id: id });
@@ -492,9 +485,8 @@ exports.deleteAnnouncement = async (req, res) => {
   }
 };
 
-
 exports.verifyEvent = async (req, res) => {
-  console.log(req.body,"inside verifyEvent");
+  console.log(req.body, "inside verifyEvent");
   try {
     let { eventId } = req.body;
     console.log(req.body);
@@ -518,10 +510,9 @@ exports.verifyEvent = async (req, res) => {
   }
 };
 
-
 exports.getAllVerifiedStudent = async (req, res) => {
   try {
-    let studentData = await db.getData(Model.Student , {isVerified:true});
+    let studentData = await db.getData(Model.Student, { isVerified: true });
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({

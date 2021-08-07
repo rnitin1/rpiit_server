@@ -61,6 +61,42 @@ exports.signup = async (req, res) => {
       course,
       password: hashPassword,
     };
+    if (
+      course === "engineering" ||
+      course === "bhm&ct" ||
+      course === "b-pharma" ||
+      course === "bsc-n" ||
+      course === "bpt" ||
+      course === "baslp"
+    ) {
+      if (semester === 7 || semester === 8) {
+        dataToSave.isFinalYear = true;
+      }
+    }
+    if (
+      course === "diploma" ||
+      course === "bba" ||
+      course === "dmlt" ||
+      course === "gnm" ||
+      course === "rac" ||
+      course === "bsfi" ||
+      course === "mit"
+    ) {
+      if (semester === 5 || semester === 6) {
+        dataToSave.isFinalYear = true;
+      }
+    }
+    if (
+      course === "mtech" ||
+      course === "mba" ||
+      course === "d-pharma" ||
+      course === "anm" ||
+      course === "post-basic-n"
+    ) {
+      if (semester === 3 || semester === 4) {
+        dataToSave.isFinalYear = true;
+      }
+    }
     let saveData = await db.saveData(Model.Student, dataToSave);
     res.status(200).send({
       data: saveData,
@@ -287,7 +323,9 @@ exports.getComplaint = async (req, res) => {
       };
     }
     let count = await Model.Complaint.countDocuments(complaintObj);
-    let users = await Model.Complaint.find(complaintObj).populate("studentId").populate("targetId");
+    let users = await Model.Complaint.find(complaintObj)
+      .populate("studentId")
+      .populate("targetId");
     // .skip(skip).limit(limit);
     res.status(200).send({
       data: users,
@@ -692,7 +730,7 @@ exports.addYearBook = async (req, res) => {
       {},
       "events"
     );
-    if (yearBookData.length >0)
+    if (yearBookData.length > 0)
       return res.send({
         statusCode: 406,
         message: "Already added",
@@ -785,19 +823,26 @@ exports.giveCommentToFinalYearStur = async (req, res) => {
 exports.getOneYearBook = async (req, res) => {
   try {
     let { finalYearStudentId } = req.body;
-    let yearBookData = await db.populateData(Model.YearBook, {
-      studentId: finalYearStudentId,
-    } , {},{},"studentId");
-    console.log({finalYearStudentId , yearBookData});
-    if (!yearBookData)  return res.send({
-      statusCode: 404,
-      message: "Not found",
-    });
-     
+    let yearBookData = await db.populateData(
+      Model.YearBook,
+      {
+        studentId: finalYearStudentId,
+      },
+      {},
+      {},
+      "studentId"
+    );
+    console.log({ finalYearStudentId, yearBookData });
+    if (!yearBookData)
+      return res.send({
+        statusCode: 404,
+        message: "Not found",
+      });
+
     return res.send({
       statusCode: 200,
       message: "ok",
-      data: yearBookData.length>0 ? yearBookData[0]:{},
+      data: yearBookData.length > 0 ? yearBookData[0] : {},
     });
   } catch (err) {
     res.status(401).send(err);
@@ -808,12 +853,19 @@ exports.getOneYearBook = async (req, res) => {
 exports.getAllYearBook = async (req, res) => {
   try {
     // let { finalYearStudentId } = req.body;
-    let yearBookData = await db.populateData(Model.YearBook,{},{},{},"studentId");
-    if (!yearBookData)  return res.send({
-      statusCode: 404,
-      message: "Not found",
-    });
-     
+    let yearBookData = await db.populateData(
+      Model.YearBook,
+      {},
+      {},
+      {},
+      "studentId"
+    );
+    if (!yearBookData)
+      return res.send({
+        statusCode: 404,
+        message: "Not found",
+      });
+
     return res.send({
       statusCode: 200,
       message: "ok",
@@ -821,6 +873,6 @@ exports.getAllYearBook = async (req, res) => {
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err); 
+    return console.log("ERROR", err);
   }
 };
