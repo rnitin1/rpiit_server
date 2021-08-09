@@ -114,7 +114,7 @@ exports.verifyStudent = async (req, res) => {
   try {
     let { studentId } = req.body;
     console.log(req.body);
-    let studentData = await db.findOne(Model.Student, { _id: studentId });
+    let studentData = await db.findOne(Model.Student, { _id: studentId }, {});
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_EMAIL);
     let updateStudentData = await db.findAndUpdate(
@@ -136,7 +136,12 @@ exports.verifyStudent = async (req, res) => {
 
 exports.getAllStudent = async (req, res) => {
   try {
-    let studentData = await db.getData(Model.Student);
+    let studentData = await db.getData(
+      Model.Student,
+      {},
+      {},
+      { sort: { created_on: -1 } }
+    );
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
@@ -269,7 +274,12 @@ exports.deleteMagzines = async (req, res) => {
 
 exports.getAllAlumini = async (req, res) => {
   try {
-    let studentData = await db.getData(Model.Alumini);
+    let studentData = await db.getData(
+      Model.Alumini,
+      {},
+      {},
+      { sort: { created_on: -1 } }
+    );
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
@@ -452,7 +462,12 @@ exports.changeSemester = async (req, res) => {
 
 exports.getAnnouncement = async (req, res) => {
   try {
-    let announcement = await db.getData(Model.Announcement);
+    let announcement = await db.getData(
+      Model.Announcement,
+      {},
+      {},
+      { sort: { created_on: -1 } }
+    );
     if (!announcement)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
@@ -532,7 +547,12 @@ exports.verifyEvent = async (req, res) => {
 
 exports.getAllVerifiedStudent = async (req, res) => {
   try {
-    let studentData = await db.getData(Model.Student, { isVerified: true });
+    let studentData = await db.getData(
+      Model.Student,
+      { isVerified: true },
+      {},
+      { sort: { created_on: -1 } }
+    );
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
