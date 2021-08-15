@@ -136,12 +136,7 @@ exports.verifyStudent = async (req, res) => {
 
 exports.getAllStudent = async (req, res) => {
   try {
-    let studentData = await db.getData(
-      Model.Student,
-      {},
-      {},
-      { sort: { created_on: -1 } }
-    );
+    let studentData = await db.getData(Model.Student);
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
@@ -274,12 +269,7 @@ exports.deleteMagzines = async (req, res) => {
 
 exports.getAllAlumini = async (req, res) => {
   try {
-    let studentData = await db.getData(
-      Model.Alumini,
-      {},
-      {},
-      { sort: { created_on: -1 } }
-    );
+    let studentData = await db.getData(Model.Alumini);
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
@@ -462,12 +452,7 @@ exports.changeSemester = async (req, res) => {
 
 exports.getAnnouncement = async (req, res) => {
   try {
-    let announcement = await db.getData(
-      Model.Announcement,
-      {},
-      {},
-      { sort: { created_on: -1 } }
-    );
+    let announcement = await db.getData(Model.Announcement);
     if (!announcement)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
@@ -547,12 +532,7 @@ exports.verifyEvent = async (req, res) => {
 
 exports.getAllVerifiedStudent = async (req, res) => {
   try {
-    let studentData = await db.getData(
-      Model.Student,
-      { isVerified: true },
-      {},
-      { sort: { created_on: -1 } }
-    );
+    let studentData = await db.getData(Model.Student, { isVerified: true });
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({

@@ -283,12 +283,7 @@ exports.addMagzine = async (req, res) => {
 
 exports.getAllMagzines = async (req, res) => {
   try {
-    let getData = await db.getData(
-      Model.Emagzines,
-      {},
-      {},
-      { sort: { created_on: -1 } }
-    );
+    let getData = await db.getData(Model.Emagzines);
     res.status(200).send({
       data: getData,
       customMessage: 'ok',
@@ -675,14 +670,9 @@ exports.getResume = async (req, res) => {
 
 exports.getEventByType = async (req, res) => {
   try {
-    let getData = await db.getData(
-      Model.Event,
-      {
-        eventType: req.body.eventType,
-      },
-      {},
-      { sort: { created_on: -1 } }
-    );
+    let getData = await db.getData(Model.Event, {
+      eventType: req.body.eventType,
+    });
     res.status(200).send({
       data: getData,
       customMessage: 'ok',
@@ -913,7 +903,7 @@ exports.getAllYearBook = async (req, res) => {
       Model.YearBook,
       {},
       {},
-      { sort: { created_on: -1 } },
+      {},
       'studentId'
     );
     if (!yearBookData)
