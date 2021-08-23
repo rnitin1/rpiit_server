@@ -17,7 +17,7 @@ Route.post(
   multer.upload.single("image"),
   Controller.Student.addEvent
 );
-Route.delete("/deleteEvent/:eventId", Controller.Student.deleteEvent);
+Route.delete("/deleteEvent/:eventId",userAuth , Controller.Student.deleteEvent);
 
 // Route.post(
 //   "/addEvent",
