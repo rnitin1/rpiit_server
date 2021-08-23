@@ -670,16 +670,22 @@ exports.getResume = async (req, res) => {
 
 exports.getEventByType = async (req, res) => {
   try {
-    console.log(req.user);
+    console.log(req.user.type, 'gggggggggg');
+    if (req.user.type === 'ALL' || req.user.type === req.body.eventType) {
+      let getData = await db.getData(Model.Event, {
+        eventType: req.body.eventType,
+      });
+      return res.status(200).send({
+        data: getData,
+        customMessage: 'ok',
+        statusCode: 200,
+      });
+    }
 
-
-    let getData = await db.getData(Model.Event, {
-      eventType: req.body.eventType,
-    });
-    res.status(200).send({
-      data: getData,
-      customMessage: 'ok',
-      statusCode: 200,
+    return res.status(200).send({
+      // data: getData,
+      customMessage: 'You are not authorized to perform this action',
+      statusCode: 401,
     });
   } catch (err) {
     res.status(401).send(err);

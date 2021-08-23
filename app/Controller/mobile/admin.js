@@ -28,7 +28,8 @@ exports.login = async (req, res) => {
 
     let accessToken = await universalFunction.JwtAuth.jwtSign(
       studentData._id,
-      studentData.email
+      studentData.email,
+      studentData.actionType
     );
     console.log('data', studentData);
     console.log('token', accessToken);
