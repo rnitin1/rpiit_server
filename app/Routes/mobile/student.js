@@ -1,3 +1,4 @@
+const { userAuth } = require("../../middlewares/auth");
 const multer = require("../../middlewares/multer");
 
 const express = require("express"),
@@ -32,7 +33,7 @@ Route.post("/addAlumini", Controller.Student.addAlumini);
 Route.post("/forgotPassword", Controller.Student.forgotPassword);
 Route.post("/getResume", Controller.Student.getResume);
 Route.post("/changePassword", Controller.Student.changePassword);
-Route.post("/getEventByType", Controller.Student.getEventByType);
+Route.post("/getEventByType",userAuth , Controller.Student.getEventByType);
 Route.post("/updateResume/:id", Controller.Student.updateResume);
 Route.post("/addYearBook", Controller.Student.addYearBook);
 Route.post("/giveCommentToFinalYearStur", Controller.Student.giveCommentToFinalYearStur);

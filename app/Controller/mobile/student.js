@@ -666,6 +666,9 @@ exports.getResume = async (req, res) => {
 
 exports.getEventByType = async (req, res) => {
   try {
+    console.log(req.user);
+
+
     let getData = await db.getData(Model.Event, {
       eventType: req.body.eventType,
     });

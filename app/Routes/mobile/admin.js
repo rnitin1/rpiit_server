@@ -5,6 +5,7 @@ const express = require("express"),
   Controller = require("../../Controller/mobile");
 
 Route.post("/verifyStudent", Controller.Admin.verifyStudent);
+Route.post("/addStudent", Controller.Admin.addStudent);
 Route.post("/login", Controller.Admin.login);
 Route.post("/updateStudent/:id", Controller.Admin.updateStudent);
 Route.post("/verifyEvent", Controller.Admin.verifyEvent);
