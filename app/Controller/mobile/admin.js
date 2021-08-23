@@ -1,12 +1,12 @@
-const { Student } = require("../../Model");
-const universalFunction = require("../../UniversalFuntions"),
-  db = require("../../services/dboperations"),
-  Model = require("../../Model"),
-  config = require("../../config"),
-  validations = require("../../Validation"),
-  randomstring = require("randomstring");
-const { sendMail1 } = require("../../utils/sendMail");
-let path = "https://api.appformersrpiit.co.in//uploader/";
+const { Student } = require('../../Model');
+const universalFunction = require('../../UniversalFuntions'),
+  db = require('../../services/dboperations'),
+  Model = require('../../Model'),
+  config = require('../../config'),
+  validations = require('../../Validation'),
+  randomstring = require('randomstring');
+const { sendMail1 } = require('../../utils/sendMail');
+let path = 'https://api.appformersrpiit.co.in//uploader/';
 
 exports.login = async (req, res) => {
   try {
@@ -30,17 +30,17 @@ exports.login = async (req, res) => {
       studentData._id,
       studentData.email
     );
-	  console.log("data",studentData);
-    console.log("token", accessToken);
+    console.log('data', studentData);
+    console.log('token', accessToken);
     return res.status(200).send({
       data: studentData,
       accessToken,
-      customMessage: "Successfully logged in",
+      customMessage: 'Successfully logged in',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -64,7 +64,7 @@ exports.addStudent = async (req, res) => {
       course,
       isStudent,
     } = req.body;
-    console.log("body", req.body);
+    console.log('body', req.body);
     let criteria = { email };
     let checkStudent = await db.findOne(Model.Student, criteria);
     if (checkStudent && checkStudent.isVerified === true)
@@ -94,19 +94,19 @@ exports.addStudent = async (req, res) => {
       isVeriFied: true,
       password: hashPassword,
     };
-    let subject = "Your account password ";
+    let subject = 'Your account password ';
     await sendMail1(email, subject, password).then(async (res) => {
       await Student.update({ email }, dataToSave, { new: true, lean: true });
     });
     let saveData = await db.saveData(Model.Student, dataToSave);
     res.status(200).send({
       data: saveData,
-      customMessage: "Your Account is under verification",
+      customMessage: 'Your Account is under verification',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("=========================", err);
+    return console.log('=========================', err);
   }
 };
 
@@ -114,7 +114,7 @@ exports.verifyStudent = async (req, res) => {
   try {
     let { studentId } = req.body;
     console.log(req.body);
-    let studentData = await db.findOne(Model.Student, { _id: studentId });
+    let studentData = await db.findOne(Model.Student, { _id: studentId }, {});
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_EMAIL);
     let updateStudentData = await db.findAndUpdate(
@@ -125,12 +125,12 @@ exports.verifyStudent = async (req, res) => {
     );
     return res.status(200).send({
       data: updateStudentData,
-      customMessage: "Successfully Verified",
+      customMessage: 'Successfully Verified',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -141,12 +141,12 @@ exports.getAllStudent = async (req, res) => {
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
       data: studentData,
-      customMessage: "Successfully Verified",
+      customMessage: 'Successfully Verified',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -159,34 +159,34 @@ exports.getOneStudent = async (req, res) => {
       },
       {},
       {},
-      "events"
+      'events'
     );
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
       data: studentData[0],
-      customMessage: "Successfully Verified",
+      customMessage: 'Successfully Verified',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
 exports.getAllSuggestion = async (req, res) => {
   try {
-    let suggestionData = await Model.Suggestion.find().populate("studentId");
+    let suggestionData = await Model.Suggestion.find().populate('studentId');
     if (!suggestionData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
       data: suggestionData,
-      customMessage: "Successfully Verified",
+      customMessage: 'Successfully Verified',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -194,17 +194,17 @@ exports.getSingleSuggestion = async (req, res) => {
   try {
     let suggestionData = await Model.Suggestion.findOne({
       _id: req.params.id,
-    }).populate("studentId");
+    }).populate('studentId');
     if (!suggestionData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
       data: suggestionData,
-      customMessage: "Successfully Verified",
+      customMessage: 'Successfully Verified',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -219,12 +219,12 @@ exports.replyToComplaint = async (req, res) => {
     );
     return res.status(200).send({
       data: updateComplaint,
-      customMessage: "Successfully Verified",
+      customMessage: 'Successfully Verified',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -239,12 +239,12 @@ exports.replyToSuggetion = async (req, res) => {
     );
     return res.status(200).send({
       data: updateSuggetion,
-      customMessage: "Successfully Verified",
+      customMessage: 'Successfully Verified',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -255,15 +255,15 @@ exports.deleteMagzines = async (req, res) => {
     if (!deleteMagzine)
       return res.send({
         statusCode: 400,
-        message: "Something went wrong",
+        message: 'Something went wrong',
       });
     res.send({
       statusCode: 200,
-      message: "successfully deleted",
+      message: 'successfully deleted',
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -274,12 +274,12 @@ exports.getAllAlumini = async (req, res) => {
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
       data: studentData,
-      customMessage: "Successfully Verified",
+      customMessage: 'Successfully Verified',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -300,7 +300,7 @@ exports.updateStudent = async (req, res) => {
     let checkStudent = await db.findOne(Model.Student, { _id: req.params.id });
     console.log(checkStudent, req.params.id);
     if (!checkStudent)
-      return res.status(400).send({ message: "Student not exists" });
+      return res.status(400).send({ message: 'Student not exists' });
     let dataToSet = {
       name: name || checkStudent.name,
       fatherName: fatherName || checkStudent.fatherName,
@@ -327,11 +327,11 @@ exports.updateStudent = async (req, res) => {
     );
     return res.send({
       data: updateStudent,
-      message: "updated successfuly",
+      message: 'updated successfuly',
     });
   } catch (err) {
-    console.log("===========", err);
-    res.status(400).send({ message: "Please enter valid data" });
+    console.log('===========', err);
+    res.status(400).send({ message: 'Please enter valid data' });
   }
 };
 
@@ -340,7 +340,7 @@ exports.addAnnouncement = async (req, res) => {
     let { title, date, description, url, deviceType, image } = req.body;
     console.log({ title, date, description, url, image: req.file });
     let dataToSave = { title, date, description, url, deviceType };
-    if (deviceType === "mobile") {
+    if (deviceType === 'mobile') {
       dataToSave.image = image;
     }
     if (req.file) {
@@ -349,13 +349,13 @@ exports.addAnnouncement = async (req, res) => {
     let saveData = await db.saveData(Model.Announcement, dataToSave);
     res.status(200).send({
       data: saveData,
-      customMessage: "OK",
+      customMessage: 'OK',
       statusCode: 200,
       // count,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -363,14 +363,14 @@ exports.changeSemester = async (req, res) => {
   try {
     let { branch } = req.body;
     if (
-      branch === "engineering" ||
-      branch === "bhm&ct" ||
-      branch === "b-pharma" ||
-      branch === "bsc-n" ||
-      branch === "bpt" ||
-      branch === "baslp"
+      branch === 'engineering' ||
+      branch === 'bhm&ct' ||
+      branch === 'b-pharma' ||
+      branch === 'bsc-n' ||
+      branch === 'bpt' ||
+      branch === 'baslp'
     ) {
-      console.log("comming 1");
+      console.log('comming 1');
       let changeSemester = await db.updateMany(
         Model.Student,
         { semester: { $lt: 8 } },
@@ -385,20 +385,20 @@ exports.changeSemester = async (req, res) => {
       );
       return res.send({
         statusCode: 200,
-        message: "ok",
+        message: 'ok',
         data: changeSemester,
       });
     }
     if (
-      branch === "diploma" ||
-      branch === "bba" ||
-      branch === "dmlt" ||
-      branch === "gnm" ||
-      branch === "rac" ||
-      branch === "bsfi" ||
-      branch === "mit"
+      branch === 'diploma' ||
+      branch === 'bba' ||
+      branch === 'dmlt' ||
+      branch === 'gnm' ||
+      branch === 'rac' ||
+      branch === 'bsfi' ||
+      branch === 'mit'
     ) {
-      console.log("comming 2");
+      console.log('comming 2');
       let changeSemester = await db.updateMany(
         Model.Student,
         { semester: { $lt: 6 } },
@@ -413,18 +413,18 @@ exports.changeSemester = async (req, res) => {
       );
       return res.send({
         statusCode: 200,
-        message: "ok",
+        message: 'ok',
         data: changeSemester,
       });
     }
     if (
-      branch === "mtech" ||
-      branch === "mba" ||
-      branch === "d-pharma" ||
-      branch === "anm" ||
-      branch === "post-basic-n"
+      branch === 'mtech' ||
+      branch === 'mba' ||
+      branch === 'd-pharma' ||
+      branch === 'anm' ||
+      branch === 'post-basic-n'
     ) {
-      console.log("comming 3");
+      console.log('comming 3');
 
       let changeSemester = await db.updateMany(
         Model.Student,
@@ -440,13 +440,13 @@ exports.changeSemester = async (req, res) => {
       );
       return res.send({
         statusCode: 200,
-        message: "ok",
+        message: 'ok',
         data: changeSemester,
       });
     }
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -457,28 +457,47 @@ exports.getAnnouncement = async (req, res) => {
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
       data: announcement,
-      customMessage: "Successfull",
+      customMessage: 'Successfull',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
 exports.deleteAnnouncement = async (req, res) => {
-  console.log("req of deleteAnnouncement", req);
+  console.log('req of deleteAnnouncement', req);
   try {
     let { id } = req.params;
     let deleteAnnouncement = await db.remove(Model.Announcement, { _id: id });
     if (!deleteAnnouncement)
       return res.send({
         statusCode: 400,
-        message: "Something went wrong",
+        message: 'Something went wrong',
       });
     return res.send({
       statusCode: 200,
-      message: "successfully deleted",
+      message: 'successfully deleted',
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    //return console.log("ERROR", err);
+  }
+};
+exports.deleteStudent = async (req, res) => {
+  console.log('req of deleteAnnouncement', req);
+  try {
+    let { id } = req.params;
+    let deleteStudent = await db.remove(Model.Student, { _id: id });
+    if (!deleteStudent)
+      return res.send({
+        statusCode: 400,
+        message: 'Something went wrong',
+      });
+    return res.send({
+      statusCode: 200,
+      message: 'successfully deleted',
     });
   } catch (err) {
     res.status(401).send(err);
@@ -487,7 +506,7 @@ exports.deleteAnnouncement = async (req, res) => {
 };
 
 exports.verifyEvent = async (req, res) => {
-  console.log(req.body, "inside verifyEvent");
+  console.log(req.body, 'inside verifyEvent');
   try {
     let { eventId } = req.body;
     console.log(req.body);
@@ -502,12 +521,12 @@ exports.verifyEvent = async (req, res) => {
     );
     return res.status(200).send({
       data: updateStudentData,
-      customMessage: "Successfully Verified",
+      customMessage: 'Successfully Verified',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -518,11 +537,11 @@ exports.getAllVerifiedStudent = async (req, res) => {
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
       data: studentData,
-      customMessage: "Successfully Verified",
+      customMessage: 'Successfully Verified',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };

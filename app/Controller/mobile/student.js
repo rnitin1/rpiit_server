@@ -1,11 +1,11 @@
-const universalFunction = require("../../UniversalFuntions"),
-  db = require("../../services/dboperations"),
-  Model = require("../../Model"),
-  config = require("../../config"),
-  randomstring = require("randomstring");
-const { sendMail1 } = require("../../utils/sendMail");
-const bcrypt = require("bcryptjs");
-let path = "https://api.appformersrpiit.co.in//uploader/";
+const universalFunction = require('../../UniversalFuntions'),
+  db = require('../../services/dboperations'),
+  Model = require('../../Model'),
+  config = require('../../config'),
+  randomstring = require('randomstring');
+const { sendMail1 } = require('../../utils/sendMail');
+const bcrypt = require('bcryptjs');
+let path = 'https://api.appformersrpiit.co.in//uploader/';
 // let path = "http://localhost:8000/uploader/";
 
 exports.signup = async (req, res) => {
@@ -62,36 +62,36 @@ exports.signup = async (req, res) => {
       password: hashPassword,
     };
     if (
-      course === "engineering" ||
-      course === "bhm&ct" ||
-      course === "b-pharma" ||
-      course === "bsc-n" ||
-      course === "bpt" ||
-      course === "baslp"
+      course === 'engineering' ||
+      course === 'bhm&ct' ||
+      course === 'b-pharma' ||
+      course === 'bsc-n' ||
+      course === 'bpt' ||
+      course === 'baslp'
     ) {
       if (semester === 7 || semester === 8) {
         dataToSave.isFinalYear = true;
       }
     }
     if (
-      course === "diploma" ||
-      course === "bba" ||
-      course === "dmlt" ||
-      course === "gnm" ||
-      course === "rac" ||
-      course === "bsfi" ||
-      course === "mit"
+      course === 'diploma' ||
+      course === 'bba' ||
+      course === 'dmlt' ||
+      course === 'gnm' ||
+      course === 'rac' ||
+      course === 'bsfi' ||
+      course === 'mit'
     ) {
       if (semester === 5 || semester === 6) {
         dataToSave.isFinalYear = true;
       }
     }
     if (
-      course === "mtech" ||
-      course === "mba" ||
-      course === "d-pharma" ||
-      course === "anm" ||
-      course === "post-basic-n"
+      course === 'mtech' ||
+      course === 'mba' ||
+      course === 'd-pharma' ||
+      course === 'anm' ||
+      course === 'post-basic-n'
     ) {
       if (semester === 3 || semester === 4) {
         dataToSave.isFinalYear = true;
@@ -100,12 +100,12 @@ exports.signup = async (req, res) => {
     let saveData = await db.saveData(Model.Student, dataToSave);
     res.status(200).send({
       data: saveData,
-      customMessage: "Your Account is under verification",
+      customMessage: 'Your Account is under verification',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("=========================", err);
+    return console.log('=========================', err);
   }
 };
 
@@ -127,42 +127,43 @@ exports.login = async (req, res) => {
         .status(400)
         .send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_PASSWORD);
     let dataToSave = {
-       deviceToken, deviceType 
-    }
-    let {course ,semester } = studentData
-    console.log({course});
+      deviceToken,
+      deviceType,
+    };
+    let { course, semester } = studentData;
+    console.log({ course });
 
     if (
-      course === "engineering" ||
-      course === "bhm&ct" ||
-      course === "b-pharma" ||
-      course === "bsc-n" ||
-      course === "bpt" ||
-      course === "baslp"
+      course === 'engineering' ||
+      course === 'bhm&ct' ||
+      course === 'b-pharma' ||
+      course === 'bsc-n' ||
+      course === 'bpt' ||
+      course === 'baslp'
     ) {
       if (semester === 7 || semester === 8) {
         dataToSave.isFinalYear = true;
       }
     }
     if (
-      course === "diploma" ||
-      course === "bba" ||
-      course === "dmlt" ||
-      course === "gnm" ||
-      course === "rac" ||
-      course === "bsfi" ||
-      course === "mit"
+      course === 'diploma' ||
+      course === 'bba' ||
+      course === 'dmlt' ||
+      course === 'gnm' ||
+      course === 'rac' ||
+      course === 'bsfi' ||
+      course === 'mit'
     ) {
       if (semester === 5 || semester === 6) {
         dataToSave.isFinalYear = true;
       }
     }
     if (
-      course === "mtech" ||
-      course === "mba" ||
-      course === "d-pharma" ||
-      course === "anm" ||
-      course === "post-basic-n"
+      course === 'mtech' ||
+      course === 'mba' ||
+      course === 'd-pharma' ||
+      course === 'anm' ||
+      course === 'post-basic-n'
     ) {
       if (semester === 3 || semester === 4) {
         dataToSave.isFinalYear = true;
@@ -171,7 +172,7 @@ exports.login = async (req, res) => {
     let updateStudentData = await db.findAndUpdate(
       Model.Student,
       searchObj,
-     dataToSave,
+      dataToSave,
       { new: true }
     );
 
@@ -179,16 +180,16 @@ exports.login = async (req, res) => {
       studentData._id,
       studentData.email
     );
-    console.log("token", accessToken);
+    console.log('token', accessToken);
     return res.status(200).send({
       data: updateStudentData,
       accessToken,
-      customMessage: "Successfully logged in",
+      customMessage: 'Successfully logged in',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -246,12 +247,12 @@ exports.addResume = async (req, res) => {
     let saveData = await db.saveData(Model.Resume, dataToSave);
     res.status(200).send({
       data: saveData,
-      customMessage: "success",
+      customMessage: 'success',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -266,17 +267,17 @@ exports.addMagzine = async (req, res) => {
       author,
       description,
       studentId,
-      emagazine: req.file ? path + req.file.filename : "",
+      emagazine: req.file ? path + req.file.filename : '',
     };
     let saveData = await db.saveData(Model.Emagzines, dataToSave);
     res.status(200).send({
       data: saveData,
-      customMessage: "Magzine Added",
+      customMessage: 'Magzine Added',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -285,12 +286,12 @@ exports.getAllMagzines = async (req, res) => {
     let getData = await db.getData(Model.Emagzines);
     res.status(200).send({
       data: getData,
-      customMessage: "ok",
+      customMessage: 'ok',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -299,12 +300,12 @@ exports.getOneMagzine = async (req, res) => {
     let getData = await db.findOne(Model.Emagzines, { _id: req.params.id });
     res.status(200).send({
       data: getData,
-      customMessage: "ok",
+      customMessage: 'ok',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -317,7 +318,7 @@ exports.getStudent = async (req, res) => {
     if (req.body.search) {
       searchObj = {
         $or: [
-          { name: { $regex: req.body.search, $options: "i" } },
+          { name: { $regex: req.body.search, $options: 'i' } },
           { phoneNumber: req.body.search },
           { email: req.body.search },
         ],
@@ -325,16 +326,19 @@ exports.getStudent = async (req, res) => {
       };
     }
     let count = await Model.Student.countDocuments(searchObj);
-    let users = await Model.Student.find(searchObj).skip(skip).limit(limit);
+    let users = await Model.Student.find(searchObj)
+      .skip(skip)
+      .limit(limit)
+      .sort({ created_on: -1 });
     res.status(200).send({
       data: users,
-      customMessage: "OK",
+      customMessage: 'OK',
       statusCode: 200,
       count,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -345,12 +349,12 @@ exports.UserComplaint = async (req, res) => {
     let saveData = await db.saveData(Model.Complaint, dataToSave);
     res.status(200).send({
       data: saveData,
-      customMessage: "Complaint Added",
+      customMessage: 'Complaint Added',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -366,18 +370,18 @@ exports.getComplaint = async (req, res) => {
     }
     let count = await Model.Complaint.countDocuments(complaintObj);
     let users = await Model.Complaint.find(complaintObj)
-      .populate("studentId")
-      .populate("targetId");
+      .populate('studentId')
+      .populate('targetId');
     // .skip(skip).limit(limit);
     res.status(200).send({
       data: users,
-      customMessage: "OK",
+      customMessage: 'OK',
       statusCode: 200,
       count,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -387,13 +391,13 @@ exports.userSuggestion = async (req, res) => {
     let saveData = await db.saveData(Model.Suggestion, { ...req.body });
     res.status(200).send({
       data: saveData,
-      customMessage: "OK",
+      customMessage: 'OK',
       statusCode: 200,
       // count,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -427,12 +431,12 @@ exports.addAlumini = async (req, res) => {
     let saveData = await db.saveData(Model.Alumini, dataToSave);
     res.status(200).send({
       data: saveData,
-      customMessage: "Magzine Added",
+      customMessage: 'Magzine Added',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -440,22 +444,22 @@ exports.forgotPassword = async (req, res) => {
   try {
     let { email } = req.body;
     let checkUser = await Model.Student.findOne({ email });
-    if (!checkUser) return res.status(404).json({ message: "User not found" });
+    if (!checkUser) return res.status(404).json({ message: 'User not found' });
     let code = randomstring.generate(8);
     let password = code.toUpperCase();
     let dataToSave = {
       password: await universalFunction.Password.getPassword(password),
     };
     // let template = await forgotPasswordTemplate(password);
-    let subject = "Reset Password";
-    console.log("Above");
+    let subject = 'Reset Password';
+    console.log('Above');
     sendMail1(email, subject, password).then(async (res) => {
       await db.update(Model.Student, { email }, dataToSave, {
         new: true,
         lean: true,
       });
     });
-    res.status(200).send({ message: "Password has been sent to your mail" });
+    res.status(200).send({ message: 'Password has been sent to your mail' });
   } catch (err) {
     console.log(err);
     res.send(err);
@@ -489,7 +493,7 @@ exports.updateResume = async (req, res) => {
     /**********************************HANDLE DRIVER***************************** */
     let checkStudent = await db.findOne(Model.Resume, { _id: req.params.id });
     if (!checkStudent)
-      return res.status(400).send({ message: "Student not exists" });
+      return res.status(400).send({ message: 'Student not exists' });
     let dataToSet = {
       name: name || checkStudent.name,
       fatherName: fatherName || checkStudent.fatherName,
@@ -521,11 +525,11 @@ exports.updateResume = async (req, res) => {
     );
     return res.send({
       data: updateStudent,
-      message: "updated successfuly",
+      message: 'updated successfuly',
     });
   } catch (err) {
-    console.log("===========", err);
-    res.status(400).send({ message: "Please enter valid data" });
+    console.log('===========', err);
+    res.status(400).send({ message: 'Please enter valid data' });
   }
 };
 
@@ -547,7 +551,7 @@ exports.addEvent = async (req, res) => {
       price,
       // deviceType,
     } = req.body;
-    console.log("req.bodyasdasd", req.body, "image", req.file);
+    console.log('req.bodyasdasd', req.body, 'image', req.file);
     let dataToSave = {
       title,
       coordinator,
@@ -560,7 +564,7 @@ exports.addEvent = async (req, res) => {
       position,
       price,
     };
-    if (deviceType === "mobile") {
+    if (deviceType === 'mobile') {
       dataToSave.image = image;
       dataToSave.creatorId = creatorId;
     } else {
@@ -570,28 +574,28 @@ exports.addEvent = async (req, res) => {
     let saveData = await db.saveData(Model.Event, dataToSave);
     res.status(200).send({
       data: saveData,
-      customMessage: "Event Added",
+      customMessage: 'Event Added',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
 exports.deleteEvent = async (req, res) => {
-  console.log("req of delevent", req);
+  console.log('req of delevent', req);
   try {
     let { eventId } = req.params;
     let deleteEvent = await db.remove(Model.Event, { _id: eventId });
     if (!deleteEvent)
       return res.send({
         statusCode: 400,
-        message: "Something went wrong",
+        message: 'Something went wrong',
       });
     return res.send({
       statusCode: 200,
-      message: "successfully deleted",
+      message: 'successfully deleted',
     });
   } catch (err) {
     res.status(401).send(err);
@@ -609,7 +613,7 @@ exports.applyEvent = async (req, res) => {
 
     if (findAlreadyApplied)
       return res.send({
-        customMessage: "Event Already applied",
+        customMessage: 'Event Already applied',
         statusCode: 406,
       });
 
@@ -639,12 +643,12 @@ exports.applyEvent = async (req, res) => {
     ]);
     return res.send({
       data: { studentData, eventData },
-      customMessage: "Event Added",
+      customMessage: 'Event Added',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -655,12 +659,12 @@ exports.getResume = async (req, res) => {
     });
     res.status(200).send({
       data: getData,
-      customMessage: "ok",
+      customMessage: 'ok',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -674,12 +678,12 @@ exports.getEventByType = async (req, res) => {
     });
     res.status(200).send({
       data: getData,
-      customMessage: "ok",
+      customMessage: 'ok',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -693,7 +697,7 @@ exports.changePassword = async (req, res) => {
     if (!user)
       return res.send({
         statusCode: 401,
-        message: "Unauthorized",
+        message: 'Unauthorized',
       });
     let checkPassword = await bcrypt.compare(
       payload.oldPassword,
@@ -701,12 +705,12 @@ exports.changePassword = async (req, res) => {
     );
     if (!checkPassword)
       return res.send({
-        message: "incorrect password ",
+        message: 'incorrect password ',
         statusCode: 406,
       });
     if (payload.oldPassword == payload.newPassword)
       return res.send({
-        message: "Same password ",
+        message: 'Same password ',
         statusCode: 406,
       });
     if (payload.newPassword == payload.confirmPassword) {
@@ -719,15 +723,15 @@ exports.changePassword = async (req, res) => {
 
       return res.send({
         statusCode: 200,
-        customMessage: "successfully changed password",
+        customMessage: 'successfully changed password',
       });
     }
     return res.send({
-      message: "incorrect  confirm password",
+      message: 'incorrect  confirm password',
       statusCode: 200,
     });
   } catch (err) {
-    console.log("===============  Error ============== ", err);
+    console.log('===============  Error ============== ', err);
     res.send(err);
   }
 };
@@ -763,7 +767,7 @@ exports.addYearBook = async (req, res) => {
       },
       {},
       {},
-      "events"
+      'events'
     );
     let yearBookData = await db.populateData(
       Model.YearBook,
@@ -773,17 +777,17 @@ exports.addYearBook = async (req, res) => {
       },
       {},
       {},
-      "events"
+      'events'
     );
     if (yearBookData.length > 0)
       return res.send({
         statusCode: 406,
-        message: "Already added",
+        message: 'Already added',
       });
     if (!studentData)
       return res.send({
         statusCode: 404,
-        message: "Not found",
+        message: 'Not found',
       });
 
     let saveData = await db.saveData(Model.YearBook, {
@@ -792,12 +796,12 @@ exports.addYearBook = async (req, res) => {
 
     res.send({
       data: saveData,
-      message: "ok",
+      message: 'ok',
       statusCode: 200,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -810,7 +814,7 @@ exports.getFinalYearStudent = async (req, res) => {
     if (req.body.search) {
       searchObj = {
         $or: [
-          { name: { $regex: req.body.search, $options: "i" } },
+          { name: { $regex: req.body.search, $options: 'i' } },
           { phoneNumber: req.body.search },
           { email: req.body.search },
         ],
@@ -822,13 +826,13 @@ exports.getFinalYearStudent = async (req, res) => {
     let users = await Model.Student.find(searchObj).skip(skip).limit(limit);
     res.status(200).send({
       data: users,
-      customMessage: "OK",
+      customMessage: 'OK',
       statusCode: 200,
       count,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -856,12 +860,12 @@ exports.giveCommentToFinalYearStur = async (req, res) => {
     );
     res.send({
       statusCode: 200,
-      message: "ok",
+      message: 'ok',
       data: updateData,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -875,23 +879,23 @@ exports.getOneYearBook = async (req, res) => {
       },
       {},
       {},
-      "studentId"
+      'studentId'
     );
     console.log({ finalYearStudentId, yearBookData });
     if (!yearBookData)
       return res.send({
         statusCode: 404,
-        message: "Not found",
+        message: 'Not found',
       });
 
     return res.send({
       statusCode: 200,
-      message: "ok",
+      message: 'ok',
       data: yearBookData.length > 0 ? yearBookData[0] : {},
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
 
@@ -903,21 +907,21 @@ exports.getAllYearBook = async (req, res) => {
       {},
       {},
       {},
-      "studentId"
+      'studentId'
     );
     if (!yearBookData)
       return res.send({
         statusCode: 404,
-        message: "Not found",
+        message: 'Not found',
       });
 
     return res.send({
       statusCode: 200,
-      message: "ok",
+      message: 'ok',
       data: yearBookData,
     });
   } catch (err) {
     res.status(401).send(err);
-    return console.log("ERROR", err);
+    return console.log('ERROR', err);
   }
 };
