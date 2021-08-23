@@ -535,7 +535,8 @@ exports.updateResume = async (req, res) => {
 
 exports.addEvent = async (req, res) => {
   try {
-    let {
+    if (req.user.type === "ALL" || req.user.type === req.body.eventType ||req.body.creatorId) {
+       let {
       title,
       coordinator,
       author,
@@ -551,7 +552,7 @@ exports.addEvent = async (req, res) => {
       price,
       // deviceType,
     } = req.body;
-    console.log("req.bodyasdasd", req.body, "image", req.file);
+    console.log('req.bodyasdasd', req.body, 'image', req.file);
     let dataToSave = {
       title,
       coordinator,
@@ -564,7 +565,7 @@ exports.addEvent = async (req, res) => {
       position,
       price,
     };
-    if (deviceType === "mobile") {
+    if (deviceType === 'mobile') {
       dataToSave.image = image;
       dataToSave.creatorId = creatorId;
     } else {
@@ -574,9 +575,12 @@ exports.addEvent = async (req, res) => {
     let saveData = await db.saveData(Model.Event, dataToSave);
     res.status(200).send({
       data: saveData,
-      customMessage: "Event Added",
+      customMessage: 'Event Added',
       statusCode: 200,
     });
+    }
+    return res.send(config.ErrorStatus.STATUS_MSG.ERROR.UNAUTHORIZED);
+   
   } catch (err) {
     res.status(401).send(err);
     return console.log("ERROR", err);

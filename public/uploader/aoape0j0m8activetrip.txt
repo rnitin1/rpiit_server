@@ -1,0 +1,175 @@
+router.get("/useractiveTrip/:_id",useractiveTrip);
+
+
+
+exports.useractiveTrip = async (req, res) => {
+  try {
+    let _id = req.params._id;
+    let activeTrip = await bookamb.find({
+      UserId: _id,
+      $or: [{ tripStatus: 'active' }, { tripStatus: 'accepted' }],
+    }).sort({"createdAt":1});
+    console.log('activeTrip', activeTrip[0]);
+    if (!activeTrip) return res.json({ message: 'something went wrong' });
+    else {
+      res.json({
+        status: true,
+        statusCode: 200,
+        message: 'view',
+        data: activeTrip[0]),
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    return res.json({
+      status: true,
+      statusCode: 500,
+      message: 'Something Went Wrong',
+      //   error: error.message,
+    });
+  }
+};
+
+
+exports.activeTrip = async (req, res, next) => {
+  try {
+    let _id = req.params._id;
+    let activeTrip = await bookamb.find({UserId:_id   });    
+    if (!activeTrip) return res.json({ message: 'something went wrong' });
+    else {
+      res.json({
+        status: true,
+        statusCode: 200,
+        message: 'view',
+        data: getRevenueId,
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    return res.json({
+      status: true,
+      statusCode: 500,
+      message: 'Something Went Wrong',
+      error: error.message,
+    });
+  }
+};
+
+
+
+
+
+
+
+
+
+router.get("/myactivetrip/:_id", myactivetrip);
+
+
+
+exports.activeTrip = async (req, res, next) => {
+  try {
+    let _id = req.params._id;
+    let activeTrip = await bookamb.find({ UserId });    
+    if (!activeTrip) return res.json({ message: 'something went wrong' });
+    else {
+      res.json({
+        status: true,
+        statusCode: 200,
+        message: 'view',
+        data: getRevenueId,
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    return res.json({
+      status: true,
+      statusCode: 500,
+      message: 'Something Went Wrong',
+      error: error.message,
+    });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+exports.drivercancelTrip = async (req, res, next) => {
+  //post
+
+  try {
+    let { cancelReason, bookingId } = req.body;
+    let findBooking = await db.findOne(bookamb, { _id: bookingId });
+    //let maping = findBooking.sort(item => `${item.DriverId}`)
+    console.log(`${findBooking.UserId} findBooking`);
+
+    if (!findBooking)
+      return res.status(404).send({
+        message: 'Not Found',
+        statusCode: 404,
+      });
+
+    let topic = findBooking.UserId + '/driverCancelledTrip';
+    console.log(`${topic} topicsss`);
+
+    let dataToSet = {
+      cancelReason,
+      cancelledBy: 'driver',
+      tripStatus: 'cancelled',
+    };
+
+    let updateBooking = await db.findAndUpdate(
+      bookamb,
+      { _id: bookingId },
+      dataToSet,
+      { new: true }
+    );
+    console.log(updateBooking, 'updateBooking');
+
+    client.publish(
+      topic,
+      '{"driverCancelledTrip":' + JSON.stringify(updateBooking) + '}'
+    );
+    return res.json({
+      status: true,
+      statusCode: 200,
+      data: updateBooking,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(409).send({
+      status: false,
+      statusCode: 409,
+      message: 'Something Went Wrong',
+      error: error.message,
+    });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.post('/drivercanceledTrip', drivercanceledTrip);
