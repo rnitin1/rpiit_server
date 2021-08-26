@@ -18,8 +18,8 @@ Route.get('/getOneMagzine/:id', Controller.Student.getOneMagzine);
 
 Route.post(
   '/addEvent',
-  userAuth,
   multer.upload.single('image'),
+  userAuth,
   Controller.Student.addEvent
 );
 Route.delete(

@@ -574,7 +574,7 @@ exports.addEvent = async (req, res) => {
       dataToSave.isVerify = true;
     }
     let saveData = await db.saveData(Model.Event, dataToSave);
-    res.status(200).send({
+    return res.status(200).send({
       data: saveData,
       customMessage: 'Event Added',
       statusCode: 200,
