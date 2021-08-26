@@ -35,5 +35,10 @@ Route.delete(
 Route.get('/getAllSuggestion', Controller.Admin.getAllSuggestion);
 Route.get('/getAllVerifiedStudent', Controller.Admin.getAllVerifiedStudent);
 Route.delete('/deleteStudent/:id', userAuth, Controller.Admin.deleteStudent);
+Route.post('/getAppliedStudents', Controller.Admin.getAppliedStudents);
 
 module.exports = Route;
+ // pull ni lia tune?nai bhul gaya
+
+
+//  copy krle jo code kia d okok

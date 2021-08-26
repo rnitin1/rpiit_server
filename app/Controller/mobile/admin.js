@@ -570,6 +570,26 @@ exports.getAllVerifiedStudent = async (req, res) => {
   }
 };
 
+exports.getAppliedStudents = async (req, res) => {
+  try {
+    let {eventId} = req.body
+    let getEventData = await db.findOne(Model.Event, { _id: eventId });
+    let studentData = await db.getData(Model.Student, {
+      _id: { $in: getEventData.studentId },
+    });
+    if (!studentData)
+      return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
+    return res.status(200).send({
+      data: studentData,
+      customMessage: 'Successfully Verified',
+      statusCode: 200,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log('ERROR', err);
+  }
+};
+// col kr5555 is no [e]
 // if (req.user.type === "ALL" || req.user.type === "social") {
 // }
 // return res.send(config.ErrorStatus.STATUS_MSG.ERROR.UNAUTHORIZED);
