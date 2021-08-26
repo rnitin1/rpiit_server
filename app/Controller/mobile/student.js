@@ -534,6 +534,7 @@ exports.updateResume = async (req, res) => {
 };
 
 exports.addEvent = async (req, res) => {
+  // ye kya bkwwas h kyasir
   try {
     if (req.user.type === "ALL" || req.user.type === req.body.eventType ||req.body.creatorId) {
        let {

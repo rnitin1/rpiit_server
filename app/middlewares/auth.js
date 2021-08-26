@@ -17,7 +17,9 @@ exports.jwtSign = async (userId, email) => {
 exports.userAuth = (req, res, next) => {
   try {
     let token = req.headers.accesstoken;
+    console.log(req.body,"=====");
     if (req.body.creatorId) {
+      console.log("in");
       next();
     } else {
       jwt.verify(token, process.env.JWT_KEY, (err, decode) => {

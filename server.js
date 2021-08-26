@@ -32,7 +32,7 @@ app.use('/docs', SwaggerUI.serve, SwaggerUI.setup(swagger))
 // Middlewares
 const middleware = [
   express.json({ type: "application/json" }),
-    express.urlencoded({ extended: true }),
+  express.urlencoded({ extended: true }),
     // image, 
   express.raw(),
   express.static(path.join(__dirname, "public")),
