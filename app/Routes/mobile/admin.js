@@ -17,11 +17,15 @@ Route.get('/getAllStudent', Controller.Admin.getAllStudent);
 Route.get('/getOneStudent', Controller.Admin.getOneStudent);
 Route.get('/getAllAlumini', Controller.Admin.getAllAlumini);
 
-Route.delete('/deleteMagzines/:magzineId', Controller.Admin.deleteMagzines);
+Route.delete(
+  '/deleteMagzines/:magzineId',
+  userAuth,
+  Controller.Admin.deleteMagzines
+);
 Route.post(
   '/addAnnouncement',
-  userAuth,
   multer.upload.single('image'),
+  userAuth,
   Controller.Admin.addAnnouncement
 );
 Route.post('/changeSemester', Controller.Admin.changeSemester);
@@ -38,7 +42,6 @@ Route.delete('/deleteStudent/:id', userAuth, Controller.Admin.deleteStudent);
 Route.post('/getAppliedStudents', Controller.Admin.getAppliedStudents);
 
 module.exports = Route;
- // pull ni lia tune?nai bhul gaya
-
+// pull ni lia tune?nai bhul gaya
 
 //  copy krle jo code kia d okok
