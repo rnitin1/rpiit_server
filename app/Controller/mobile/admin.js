@@ -6,6 +6,7 @@ const universalFunction = require('../../UniversalFuntions'),
   validations = require('../../Validation'),
   randomstring = require('randomstring');
 const { sendMail1 } = require('../../utils/sendMail');
+let {deleteFile} = require("./../../UniversalFuntions/universal")
 let path = 'https://api.appformersrpiit.co.in//uploader/';
 
 exports.login = async (req, res) => {
@@ -263,6 +264,7 @@ exports.deleteMagzines = async (req, res) => {
   try {
     if (req.user.type === 'ALL') {
       let { magzineId } = req.params;
+      let findMagzine = await db.remove(Model.Emagzines, { _id: magzineId });
       let deleteMagzine = await db.remove(Model.Emagzines, { _id: magzineId });
       if (!deleteMagzine)
         return res.send({
@@ -273,6 +275,7 @@ exports.deleteMagzines = async (req, res) => {
         statusCode: 200,
         message: 'successfully deleted',
       });
+     return deleteFile(findMagzine.emagazine)
     }
     return res.send(config.ErrorStatus.STATUS_MSG.ERROR.UNAUTHORIZED);
   } catch (err) {
