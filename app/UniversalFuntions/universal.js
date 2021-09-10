@@ -12,7 +12,8 @@ exports.tryCatch = async ( req,res,code ) =>{
 
 
 exports.deleteFile=(filePath)=>{
-    filePath = "public"+filePath.split("https://api.appformersrpiit.co.in/")[1]
     console.log({filePath});
+    filePath = "public"+filePath.split("https://api.appformersrpiit.co.in/")[1]
+ 
     fs.unlinkSync(filePath);
 } 
