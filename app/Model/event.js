@@ -40,7 +40,7 @@ let Event = new Schema(
     created_on: { type: Date, default: Date.now() },
     position:{ type: String },
   },
-  { versionKey: false }
+  { versionKey: false , timestamps:true }
 );
 
 module.exports = mongoose.model("Event", Event);
