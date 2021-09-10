@@ -605,11 +605,11 @@ exports.deleteEvent = async (req, res) => {
           statusCode: 400,
           message: "Something went wrong",
         });
-       res.send({
+      return res.send({
         statusCode: 200,
         message: "successfully deleted",
       });
-     return deleteFile(findEvent.image)
+    //  return deleteFile(findEvent.image)
     }
     return res.send(config.ErrorStatus.STATUS_MSG.ERROR.UNAUTHORIZED);
   } catch (err) {

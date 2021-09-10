@@ -275,7 +275,7 @@ exports.deleteMagzines = async (req, res) => {
         statusCode: 200,
         message: 'successfully deleted',
       });
-     return deleteFile(findMagzine.emagazine)
+    //  return deleteFile(findMagzine.emagazine)
     }
     return res.send(config.ErrorStatus.STATUS_MSG.ERROR.UNAUTHORIZED);
   } catch (err) {
