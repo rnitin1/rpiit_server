@@ -559,6 +559,7 @@ exports.addEvent = async (req, res) => {
         // deviceType,
       } = req.body;
       console.log("req.bodyasdasd", req.body, "image", req.file);
+
       let dataToSave = {
         title,
         coordinator,
@@ -570,7 +571,9 @@ exports.addEvent = async (req, res) => {
         eventType,
         position,
         price,
+        created_on:Date.now()
       };
+      console.log({dataToSave});
       if (deviceType === "mobile") {
         dataToSave.image = image;
         dataToSave.creatorId = creatorId;
