@@ -40,6 +40,7 @@ Route.get('/getAllSuggestion', Controller.Admin.getAllSuggestion);
 Route.get('/getAllVerifiedStudent', Controller.Admin.getAllVerifiedStudent);
 Route.delete('/deleteStudent/:id', userAuth, Controller.Admin.deleteStudent);
 Route.post('/getAppliedStudents', Controller.Admin.getAppliedStudents);
+Route.post('/editStudent/:id', Controller.Admin.updateStudent);
 
 module.exports = Route;
 // pull ni lia tune?nai bhul gaya
