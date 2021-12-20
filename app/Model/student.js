@@ -1,7 +1,7 @@
 const mongoose = require("mongoose"),
   Schema = mongoose.Schema;
 
-let Student = new Schema(
+let Student = new Schema( 
   {
     name: { type: String, default: "", trim: true },
     fatherName: { type: String, default: "", trim: true },

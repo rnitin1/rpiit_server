@@ -8,7 +8,8 @@ const express = require("express"),
   SwaggerUI = require("swagger-ui-express"),
   session = require('express-session'),
   randomString = require("randomstring"),
-  cors = require("cors") 
+  cors = require("cors"),
+  firebaseAdmin = require('firebase-admin');
 require('dotenv').config();
 
 /*************** Import Module *********************** */
@@ -17,6 +18,13 @@ const swagger = require("./app/config/swagger.json"),
   MobileRoutes = require("./app/Routes/mobile"),
   Bootstrap = require("./app/utils/bootstrap");
 
+  // firebase init
+  const serviceAccount = require('./rpiit-78fbe-firebase-adminsdk-cmvr9-d99188f402.json')  
+  firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.cert(serviceAccount),
+  });
+  // store as global
+  global.firebaseAdmin = firebaseAdmin;
 
 
 // Connection to mongoDB

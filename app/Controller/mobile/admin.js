@@ -8,6 +8,7 @@ const universalFunction = require('../../UniversalFuntions'),
 const { sendMail1 } = require('../../utils/sendMail');
 let {deleteFile} = require("./../../UniversalFuntions/universal")
 let path = 'https://api.appformersrpiit.co.in//uploader/';
+const { sendNotificationToAllStudents } = require('../../services/fcm');
 
 exports.login = async (req, res) => {
   try {
@@ -365,6 +366,11 @@ exports.addAnnouncement = async (req, res) => {
         dataToSave.image = path + req.file.filename;
       }
       let saveData = await db.saveData(Model.Announcement, dataToSave);
+      // send announcements
+      sendNotificationToAllStudents({notification: {
+        title: "This is a announcement Notification",
+        body: "This is the body of the notification message."
+      }})
       res.status(200).send({
         data: saveData,
         customMessage: 'OK',

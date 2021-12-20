@@ -19,6 +19,6 @@ config.AWS_BUCKET_NAME = "shevolve";
 config.EBOOKTEMPID = "d-694f509052b6473e89273e34cfadb529";
 config.SUBSCRIPTIONTEMPID = "";
 config.SIGNUPTEMPID = "";
-config.JWT_KEY =  process.env.JWT_KEY
+config.JWT_KEY =  process.env.JWT_KEY;
 module.exports = config;
   
