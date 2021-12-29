@@ -603,21 +603,9 @@ exports.getAppliedStudents = async (req, res) => {
   }
 };
 
-exports.updateStudent = async (req, res) => {
+exports.editStudent = async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      fatherName,
-      phoneNumber,
-      rollNumber,
-      address,
-      dob,
-      branch,
-      semester,
-      college,
-      course
-    } = req.body;
+    const {name, fatherName, phoneNumber, email,  trade, semester, course, rollNumber, address, dob} = req.body;
     const studentId = req.params.id;
     const theStudent = await db.findOne(Model.Student, { _id: studentId });
     if (!theStudent) {
@@ -629,11 +617,10 @@ exports.updateStudent = async (req, res) => {
       phoneNumber: phoneNumber || theStudent.phoneNumber,
       address: address || theStudent.address,
       dob: dob || theStudent.dob,
-      branch: branch || theStudent.branch,
       rollNumber: rollNumber || theStudent.rollNumber,
       semester: semester || theStudent.semester,
-      college: college || theStudent.college,
       course: course || theStudent.course,
+      trade: trade || theStudent.trade,
       email: email || theStudent.email,
       updatedAt: Date.now(),
     };
@@ -646,9 +633,11 @@ exports.updateStudent = async (req, res) => {
     return res.send({
       data: findAndUpdateStudent,
       message: 'updated successfuly',
+      statusCode: 200
     });
   } catch (err) {
-    res.status(400).send({ message: err.message });
+    console.log(err)
+    res.status(400).send({ message: err.message, statusCode: 400 });
   }
 };
 // col kr5555 is no [e]
