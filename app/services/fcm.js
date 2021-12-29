@@ -40,7 +40,7 @@ exports.getAllStudentsForNotification = async () => {
             return [];
         }
         else {
-            return studentData.map(val => val.deviceToken)
+            return studentData.map(val => val.deviceToken).filter(val => val);
         }
     } catch (err) {
         console.log(err);
@@ -55,27 +55,8 @@ exports.sendNotificationToAllStudentsWithTopic = async (message) => {
 exports.sendNotificationToAllStudentsWithToken = async (message) => {
     // get the tokens from db
     const studentDeviceTokens = await this.getAllStudentsForNotification();
-    
-    // for sample purpose
-    // const studentDeviceTokens = ['fCrXvJudQZae8hwGkFmtwf:APA91bHmtQtp5F8WY_IDZfQDfHhFok7cZjHh_IfwtXAzFG8CH-wQK1qi5GBtdQEEIrjwUoNQ9-9pfFYMZ_Km2VtnkfkX-8K42WVi68VNQgGPS8gWu820EL51RMoBwDo-WPEGGdg8z5FJ']
-
-    console.log(studentDeviceTokens);
-
     // for token based system
     if (studentDeviceTokens.length > 0) {
         this.sendPushNotificationWithToken(studentDeviceTokens, {notification: message}, 'normal');
     }
 }
-
-// call this function wherever needed notification (topic based)
-// sendNotificationToAllStudentsWithTopic({
-  //   title: "This is a announcement Notification",
-  //   body: "This is the body of the notification message."
-  // })
-
-
-//   // call this function wherever needed notification (token based)
-// sendNotificationToAllStudentsWithToken({
-  //   title: "This is a announcement Notification",
-  //   body: "This is the body of the notification message."
-  // })

@@ -586,8 +586,8 @@ exports.addEvent = async (req, res) => {
       
       // send announcements
       sendNotificationToAllStudentsWithToken({
-        title: "New Event",
-        body: `A new ${eventType} event has been added`,
+        title: `New ${eventType} Event`,
+        body: description,
         data: saveData.id
       })
       return res.status(200).send({

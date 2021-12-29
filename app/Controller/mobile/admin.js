@@ -8,7 +8,7 @@ const universalFunction = require('../../UniversalFuntions'),
 const { sendMail1 } = require('../../utils/sendMail');
 let {deleteFile} = require("./../../UniversalFuntions/universal")
 let path = 'https://api.appformersrpiit.co.in//uploader/';
-const { sendNotificationToAllStudentsWithToken, sendNotificationToAllStudentsWithTopic } = require('../../services/fcm');
+const { sendNotificationToAllStudentsWithToken } = require('../../services/fcm');
 
 exports.login = async (req, res) => {
   try {
@@ -148,7 +148,6 @@ exports.verifyStudent = async (req, res) => {
 };
 
 exports.getAllStudent = async (req, res) => {
-
   try {
     let studentData = await db.getData(Model.Student);
     if (!studentData)
@@ -370,7 +369,7 @@ exports.addAnnouncement = async (req, res) => {
       // send announcements
       sendNotificationToAllStudentsWithToken({
         title: "New Announcement",
-        body: "A new announcement has been added",
+        body: description,
         data: saveData.id
       })
       res.status(200).send({
