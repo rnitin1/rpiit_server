@@ -148,14 +148,7 @@ exports.verifyStudent = async (req, res) => {
 };
 
 exports.getAllStudent = async (req, res) => {
-  sendNotificationToAllStudentsWithTopic({
-    title: "This is a announcement Notification",
-    body: "This is the body of the notification message."
-  })
-  sendNotificationToAllStudentsWithToken({
-    title: "This is a announcement Notification",
-    body: "This is the body of the notification message."
-  })
+
   try {
     let studentData = await db.getData(Model.Student);
     if (!studentData)
@@ -375,6 +368,11 @@ exports.addAnnouncement = async (req, res) => {
       }
       let saveData = await db.saveData(Model.Announcement, dataToSave);
       // send announcements
+      sendNotificationToAllStudentsWithToken({
+        title: "New Announcement",
+        body: "A new announcement has been added",
+        data: saveData.id
+      })
       res.status(200).send({
         data: saveData,
         customMessage: 'OK',

@@ -47,22 +47,6 @@ exports.getAllStudentsForNotification = async () => {
     }
 }
 
-exports.sendNotificationToTopics = (topic, message) => {
-    const message1 = {
-        to: topic,  // either DeviceRegistrationToken or topic
-        notification: message
-
-    };
-    console.log(message1);
-    fcm.send(message1, function (err, response) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Successfully sent with response: ", response);
-        }
-    });
-}
-
 exports.sendNotificationToAllStudentsWithTopic = async (message) => {
     // for token based system
     this.sendPushNotification(message);

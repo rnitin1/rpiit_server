@@ -5,7 +5,7 @@ const universalFunction = require("../../UniversalFuntions"),
   randomstring = require("randomstring");
 const { sendMail1 } = require("../../utils/sendMail");
 const bcrypt = require("bcryptjs");
-let {deleteFile} = require("./../../UniversalFuntions/universal")
+let { deleteFile } = require("./../../UniversalFuntions/universal")
 let path = "https://api.appformersrpiit.co.in//uploader/";
 // let path = "http://localhost:8000/uploader/";
 
@@ -571,9 +571,9 @@ exports.addEvent = async (req, res) => {
         eventType,
         position,
         price,
-        created_on:Date.now()
+        created_on: Date.now()
       };
-      console.log({dataToSave});
+      console.log({ dataToSave });
       if (deviceType === "mobile") {
         dataToSave.image = image;
         dataToSave.creatorId = creatorId;
@@ -582,6 +582,14 @@ exports.addEvent = async (req, res) => {
         dataToSave.isVerify = true;
       }
       let saveData = await db.saveData(Model.Event, dataToSave);
+      // check if eventType equal sports
+      
+      // send announcements
+      sendNotificationToAllStudentsWithToken({
+        title: "New Event",
+        body: `A new ${eventType} event has been added`,
+        data: saveData.id
+      })
       return res.status(200).send({
         data: saveData,
         customMessage: "Event Added",
@@ -612,7 +620,7 @@ exports.deleteEvent = async (req, res) => {
         statusCode: 200,
         message: "successfully deleted",
       });
-    //  return deleteFile(findEvent.image)
+      //  return deleteFile(findEvent.image)
     }
     return res.send(config.ErrorStatus.STATUS_MSG.ERROR.UNAUTHORIZED);
   } catch (err) {
