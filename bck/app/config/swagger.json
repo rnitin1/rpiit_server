@@ -1,0 +1,174 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Shevolve",
+    "description": "Shevolve app "
+  },
+  "produces": ["application/json"],
+  "host": "localhost:8000",
+  "basepath": "",
+  "paths": {
+    "/admin/login": {
+      "post": {
+        "x-swagger-router-controller": "middleware-name1",
+        "opertionid": "login",
+        "tags": ["Admin"],
+        "Content-Type": "multipart/form-data",
+        "consumes": "multipart/form-data",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "email",
+            "required": "true",
+            "description": "Enter email",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "in": "formData",
+            "name": "password",
+            "required": "true",
+            "description": "Enter email",
+            "type": "string",
+            "value": ""
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/admin/addSurveyQuestionnaire": {
+      "post": {
+        "x-swagger-router-controller": "middleware-name1",
+        "opertionid": "login",
+        "tags": ["Admin"],
+        "Content-Type": "multipart/form-data",
+        "consumes": "multipart/form-data",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "accessToken",
+            "description": "Enter email",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "in": "body",
+            "name": "options",
+            "description": "Enter email",
+            "type": "array[object]",
+
+            "value": ""
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/mentee/signup": {
+      "post": {
+        "x-swagger-router-controller": "middleware-name1",
+        "opertionid": "Sign Up",
+        "tags": ["Mentee"],
+        "Content-Type": "multipart/form-data",
+        "consumes": "multipart/form-data",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "name",
+            "required": "true",
+            "description": "Enter email",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "in": "formData",
+            "name": "email",
+            "required": "true",
+            "description": "Enter email",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "in": "formData",
+            "name": "password",
+            "required": "true",
+            "description": "Enter password",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "in": "formData",
+            "name": "experience",
+            "required": "true",
+            "description": "Enter password",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "in": "formData",
+            "name": "industry",
+            "required": "true",
+            "description": "Enter password",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "in": "formData",
+            "name": "domain",
+            "required": "true",
+            "description": "Enter password",
+            "type": "string",
+            "value": ""
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/mentee/login": {
+      "post": {
+        "x-swagger-router-controller": "middleware-name1",
+        "opertionid": "login",
+        "tags": ["Mentee"],
+        "Content-Type": "multipart/form-data",
+        "consumes": "multipart/form-data",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "email",
+            "required": "true",
+            "description": "Enter email",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "in": "formData",
+            "name": "password",
+            "required": "true",
+            "description": "Enter email",
+            "type": "string",
+            "value": ""
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/mentee/getSortedQuestions": {
+      "get": {
+        "x-swagger-router-controller": "middleware-name1",
+        "opertionid": "login",
+        "tags": ["Mentee"],
+        "Content-Type": "multipart/form-data",
+        "consumes": "multipart/form-data",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "accessToken",
+            "description": "Enter email",
+            "type": "string",
+            "value": ""
+          }
+        ],
+        "responses": {}
+      }
+    }
+  }
+}
