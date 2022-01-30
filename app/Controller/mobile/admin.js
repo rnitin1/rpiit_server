@@ -608,7 +608,7 @@ exports.changeSemester = async (req, res) => {
 
 exports.getAnnouncement = async (req, res) => {
   try {
-    let announcement = await db.getData(Model.Announcement);
+    let announcement = await db.getData(Model.Announcement); 
     if (!announcement)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({

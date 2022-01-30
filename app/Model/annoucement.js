@@ -5,9 +5,9 @@ let Anouncement = new Schema(
   {
     title: { type: String, default: "", trim: true },
     date: { type: String },
-    image: { type: String },
+    image: { type: String, default: '' },
     description: { type: String },
-    url: { type: String },
+    url: { type: String, default: '' },
     /* ******************************* important point ************************************ */
 
     isBlocked: { type: Boolean, default: false },
