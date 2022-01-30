@@ -9,7 +9,7 @@ exports.bootstrapAdmin = async function (callback) {
     email: "superadmin@rpiit.com",
     password: hashPassword,
     name: "Admin",
-    actionType:"All",
+    actionType:"ALL",
     roleId: 1
   };
 
@@ -18,7 +18,7 @@ exports.bootstrapAdmin = async function (callback) {
     email: "superadmin@gmail.com",
     password: hashPassword,
     name: "Admin",
-    actionType:"All",
+    actionType:"ALL",
     roleId: 1
   };
 
