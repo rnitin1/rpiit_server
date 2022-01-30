@@ -316,16 +316,14 @@ exports.getStudent = async (req, res) => {
     const limit = parseInt(req.body.limit); // Make sure to parse the limit to number
     const skip = parseInt(req.body.skip); // Make sure to parse the skip to number
     let searchObj = {};
-    if (req.body.search || req.body.semester) {
-      searchObj = {
-        $and: [
-          {...(req.body.search ? { branch: { $regex: req.body.search, $options: "i" } } : null)},
-          {...(req.body.semester ? { semester: req.body.semester} : null)},
-          {...(req.body.isTeacher ? {isTeacher: true} : null)}
-        ],
-        isVerified: true,
-      };
-    }
+    searchObj = {
+      $and: [
+        { ...(req.body.search ? { branch: { $regex: req.body.search, $options: "i" } } : null) },
+        { ...(req.body.semester ? { semester: req.body.semester } : null) },
+        { ...(req.body.isTeacher ? { isTeacher: true } : null) }
+      ],
+      isVerified: true,
+    };
     let count = await Model.Student.countDocuments(searchObj);
     let users = await Model.Student.find(searchObj)
       .skip(skip)
@@ -583,7 +581,7 @@ exports.addEvent = async (req, res) => {
       }
       let saveData = await db.saveData(Model.Event, dataToSave);
       // check if eventType equal sports
-      
+
       // send announcements
       // sendNotificationToAllStudentsWithToken({
       //   title: `New ${eventType} Event`,
@@ -958,17 +956,17 @@ exports.getAllYearBook = async (req, res) => {
   }
 };
 
-exports.deleteYearBook = async(req, res) => {
+exports.deleteYearBook = async (req, res) => {
   try {
     const { id } = req.query;
-    const deleted = await db.remove(Model.YearBook, {_id: id})
+    const deleted = await db.remove(Model.YearBook, { _id: id })
     return res.status(200).send({
       data: deleted,
       customMessage: 'Successfull',
       statusCode: 200,
     });
   }
-  catch(err) {
+  catch (err) {
     res.status(401).send(err);
     return console.log('ERROR', err);
   }
