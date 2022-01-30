@@ -8,6 +8,13 @@ const express = require('express'),
 Route.post('/verifyStudent', userAuth, Controller.Admin.verifyStudent);
 // Route.post("/addStudent", Controller.Admin.addStudent);
 Route.post('/login', Controller.Admin.login);
+Route.post('/addAdmin', userAuth, Controller.Admin.addAdmin)
+Route.get('/getAllAdmins', userAuth, Controller.Admin.getAllAdmins)
+Route.get('/getAdminById', userAuth, Controller.Admin.getAdminById)
+
+
+Route.delete('/deleteAdmin', userAuth, Controller.Admin.deleteAdmin)
+
 Route.post('/updateStudent/:id', Controller.Admin.updateStudent);
 Route.post('/verifyEvent', userAuth, Controller.Admin.verifyEvent);
 
@@ -16,6 +23,7 @@ Route.post('/updateStudent/:id', Controller.Admin.updateStudent);
 Route.get('/getAllStudent', Controller.Admin.getAllStudent);
 Route.get('/getOneStudent', Controller.Admin.getOneStudent);
 Route.get('/getAllAlumini', Controller.Admin.getAllAlumini);
+Route.delete('/deleteAlumini', Controller.Admin.deleteAlumini);
 
 Route.delete(
   '/deleteMagzines/:magzineId',
@@ -30,6 +38,9 @@ Route.post(
 );
 Route.post('/changeSemester', Controller.Admin.changeSemester);
 Route.get('/getAnnouncement', Controller.Admin.getAnnouncement);
+Route.get('/getAnnouncementById', Controller.Admin.getAnnouncementById);
+
+
 Route.delete(
   '/deleteAnnouncement/:id',
   userAuth,

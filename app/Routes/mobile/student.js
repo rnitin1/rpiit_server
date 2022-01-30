@@ -53,5 +53,6 @@ Route.post('/applyEvent', Controller.Student.applyEvent);
 Route.post('/getOneYearBook', Controller.Student.getOneYearBook);
 
 Route.get('/getAllYearBook', Controller.Student.getAllYearBook);
+Route.delete('/deleteYearBook', Controller.Student.deleteYearBook);
 
 module.exports = Route;

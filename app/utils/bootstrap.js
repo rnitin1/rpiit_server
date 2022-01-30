@@ -9,8 +9,8 @@ exports.bootstrapAdmin = async function (callback) {
     email: "superadmin@rpiit.com",
     password: hashPassword,
     name: "Admin",
-    actionType:"ALL"
-
+    actionType:"All",
+    roleId: 1
   };
 
 
@@ -18,7 +18,8 @@ exports.bootstrapAdmin = async function (callback) {
     email: "superadmin@gmail.com",
     password: hashPassword,
     name: "Admin",
-    actionType:"all"
+    actionType:"All",
+    roleId: 1
   };
 
   let adminData3 = {

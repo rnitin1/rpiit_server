@@ -6,7 +6,7 @@ const universalFunction = require('../../UniversalFuntions'),
   validations = require('../../Validation'),
   randomstring = require('randomstring');
 const { sendMail1 } = require('../../utils/sendMail');
-let {deleteFile} = require("./../../UniversalFuntions/universal")
+let { deleteFile } = require("./../../UniversalFuntions/universal")
 let path = 'https://api.appformersrpiit.co.in//uploader/';
 const { sendNotificationToAllStudentsWithToken } = require('../../services/fcm');
 
@@ -31,7 +31,8 @@ exports.login = async (req, res) => {
     let accessToken = await universalFunction.JwtAuth.jwtSign(
       studentData._id,
       studentData.email,
-      studentData.actionType
+      studentData.actionType,
+      studentData.roleId
     );
     console.log('data', studentData);
     console.log('token', accessToken);
@@ -46,6 +47,115 @@ exports.login = async (req, res) => {
     return console.log('ERROR', err);
   }
 };
+
+exports.getAdminById = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const adminResp = await db.findOne(Model.Admin, { _id: id });
+    return res.status(200).send({
+      data: adminResp,
+      customMessage: 'Successfull',
+      statusCode: 200,
+    });
+
+  }
+  catch (err) {
+    return res.send({
+      data: null,
+      message: err.message,
+      statusCode: 400,
+    });
+  }
+}
+
+exports.getAllAdmins = async (req, res) => {
+  try {
+    const adminResp = await db.getData(Model.Admin, { roleId: 2 });
+    return res.status(200).send({
+      data: adminResp,
+      customMessage: 'Successfull',
+      statusCode: 200,
+    });
+
+  }
+  catch (err) {
+    return res.send({
+      data: null,
+      message: err.message,
+      statusCode: 400,
+    });
+  }
+}
+
+exports.deleteAdmin = async (req, res) => {
+  try {
+    if (req.user.roleId === 1) {
+      const { id } = req.query;
+      const adminResp = await db.remove(Model.Admin, { _id: id });
+      return res.status(200).send({
+        data: adminResp,
+        customMessage: 'Successfull',
+        statusCode: 200,
+      });
+    }
+    return res.send(config.ErrorStatus.STATUS_MSG.ERROR.UNAUTHORIZED);
+  }
+  catch (err) {
+    return res.send({
+      data: null,
+      customMessage: err.message,
+      statusCode: 400,
+    });
+  }
+}
+
+exports.addAdmin = async (req, res) => { 
+  try {
+    if (req.user.roleId === 1) {
+      const { name, email, password, actionType, _id } = req.body;
+      const exists = await db.findOne(Model.Admin, { email });
+      console.log(exists, _id)
+      if (exists && !_id) {
+        return res.status(200).send({
+          data: null,
+          message: 'Email already taken',
+          statusCode: 400,
+        });
+      }
+      let adminResp = null;
+      if (_id) {
+        // update mode
+        let hashed = ''
+        if(password) {
+
+          hashed = await universalFunction.Password.getPasswordAsync(password);
+        }
+        adminResp = await db.update(Model.Admin, { _id }, { name, email, actionType, ...(password ? { password: hashed } : null) }, { new: true });
+      } else {
+        const hashed = await universalFunction.Password.getPasswordAsync(password);
+        console.log(hashed)
+        adminResp = await db.saveData(Model.Admin, { name, email, actionType, password: hashed });
+      }
+      return res.status(200).send({
+        data: adminResp,
+        customMessage: _id ? 'Success!' : 'Successfully Signed up',
+        statusCode: 200,
+      });
+    }
+    return res.send({
+      data: null,
+      message: 'You\'re not authorized to perform this action!',
+      statusCode: 400
+    });
+  }
+  catch (err) {
+    return res.send({
+      data: null,
+      message: err.message,
+      statusCode: 400,
+    });
+  }
+}
 
 exports.addStudent = async (req, res) => {
   try {
@@ -276,7 +386,7 @@ exports.deleteMagzines = async (req, res) => {
         statusCode: 200,
         message: 'successfully deleted',
       });
-    //  return deleteFile(findMagzine.emagazine)
+      //  return deleteFile(findMagzine.emagazine)
     }
     return res.send(config.ErrorStatus.STATUS_MSG.ERROR.UNAUTHORIZED);
   } catch (err) {
@@ -300,6 +410,25 @@ exports.getAllAlumini = async (req, res) => {
     return console.log('ERROR', err);
   }
 };
+
+exports.deleteAlumini = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const deleted = await db.remove(Model.Alumini, { _id: id })
+    return res.status(200).send({
+      data: deleted,
+      customMessage: 'Successfull',
+      statusCode: 200,
+    });
+  }
+  catch (err) {
+    res.send({
+      data: null,
+      customMessage: err.message,
+      statusCode: 400
+    });
+  }
+}
 
 exports.updateStudent = async (req, res) => {
   try {
@@ -367,11 +496,11 @@ exports.addAnnouncement = async (req, res) => {
       }
       let saveData = await db.saveData(Model.Announcement, dataToSave);
       // send announcements
-      sendNotificationToAllStudentsWithToken({
-        title: "New Announcement",
-        body: description,
-        data: saveData.id
-      })
+      // sendNotificationToAllStudentsWithToken({
+      //   title: "New Announcement",
+      //   body: description,
+      //   data: saveData.id
+      // })
       res.status(200).send({
         data: saveData,
         customMessage: 'OK',
@@ -480,6 +609,23 @@ exports.changeSemester = async (req, res) => {
 exports.getAnnouncement = async (req, res) => {
   try {
     let announcement = await db.getData(Model.Announcement);
+    if (!announcement)
+      return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
+    return res.status(200).send({
+      data: announcement,
+      customMessage: 'Successfull',
+      statusCode: 200,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log('ERROR', err);
+  }
+};
+
+exports.getAnnouncementById = async (req, res) => {
+  try {
+    const { id } = req.query;
+    let announcement = await db.findOne(Model.Announcement, { _id: id });
     if (!announcement)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
@@ -605,7 +751,7 @@ exports.getAppliedStudents = async (req, res) => {
 
 exports.editStudent = async (req, res) => {
   try {
-    const {name, fatherName, phoneNumber, email,  trade, semester, course, rollNumber, address, dob} = req.body;
+    const { name, fatherName, phoneNumber, email, trade, semester, course, rollNumber, address, dob } = req.body;
     const studentId = req.params.id;
     const theStudent = await db.findOne(Model.Student, { _id: studentId });
     if (!theStudent) {
@@ -647,7 +793,7 @@ exports.editStudent = async (req, res) => {
 
 exports.promoteToTeacher = async (req, res) => {
   try {
-    const {promoteToTeacher, id} = req.body;
+    const { promoteToTeacher, id } = req.body;
     const theStudent = await db.findOne(Model.Student, { _id: id });
     if (!theStudent) {
       return res.status(400).send({ message: 'Student does not exists' });

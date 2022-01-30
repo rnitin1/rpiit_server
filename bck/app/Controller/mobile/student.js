@@ -539,7 +539,8 @@ exports.addEvent = async (req, res) => {
     if (
       req.user.type === "ALL" ||
       req.user.type === req.body.eventType ||
-      req.body.creatorId
+      req.body.creatorId ||
+      req.user.roleId === 1
     ) {
       let {
         title,

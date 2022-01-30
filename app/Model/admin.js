@@ -6,8 +6,8 @@ let Admin = new Schema({
   name: { type: String, default: "Admin", trim: true },
   email: { type: String, trim: true, default: "" },
   password: { type: String, trim: true },
-  actionType:{type: String, trim: true},
- 
+  actionType: {type: String, trim: true, required: true,},
+  roleId: { type: Number, default: 2}, // 1 superadmin 2 admin
 
 
 

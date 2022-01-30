@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken"),
   config = require("../config/constants")
 
-exports.jwtSign = async (userId, email , type) => {
+exports.jwtSign = async (userId, email , type, roleId = 2) => {
   return jwt.sign(
     {
       email,
-      userId, type
+      userId, type, roleId
     },
    config.JWT_KEY
   );

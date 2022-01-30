@@ -584,11 +584,11 @@ exports.addEvent = async (req, res) => {
       // check if eventType equal sports
       
       // send announcements
-      sendNotificationToAllStudentsWithToken({
-        title: `New ${eventType} Event`,
-        body: description,
-        data: saveData.id
-      })
+      // sendNotificationToAllStudentsWithToken({
+      //   title: `New ${eventType} Event`,
+      //   body: description,
+      //   data: saveData.id
+      // })
       return res.status(200).send({
         data: saveData,
         customMessage: "Event Added",
@@ -956,3 +956,19 @@ exports.getAllYearBook = async (req, res) => {
     return console.log("ERROR", err);
   }
 };
+
+exports.deleteYearBook = async(req, res) => {
+  try {
+    const { id } = req.query;
+    const deleted = await db.remove(Model.YearBook, {_id: id})
+    return res.status(200).send({
+      data: deleted,
+      customMessage: 'Successfull',
+      statusCode: 200,
+    });
+  }
+  catch(err) {
+    res.status(401).send(err);
+    return console.log('ERROR', err);
+  }
+}
