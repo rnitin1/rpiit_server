@@ -4,10 +4,10 @@ const bcrypt = require("bcryptjs");
 
 exports.bootstrapAdmin = async function (callback) {
   let hashPassword = await bcrypt.hash("123456", 10);
-
+  const adminPassword = await bcrypt.hash("superadmin@99922", 10);
   let adminData1 = {
     email: "superadmin@rpiit.com",
-    password: hashPassword,
+    password: adminPassword,
     name: "Admin",
     actionType:"ALL",
     roleId: 1
@@ -16,7 +16,7 @@ exports.bootstrapAdmin = async function (callback) {
 
   let adminData2 = {
     email: "superadmin@gmail.com",
-    password: hashPassword,
+    password: adminPassword,
     name: "Admin",
     actionType:"ALL",
     roleId: 1
