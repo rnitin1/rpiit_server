@@ -320,7 +320,8 @@ exports.getStudent = async (req, res) => {
       searchObj = {
         $and: [
           {...(req.body.search ? { branch: { $regex: req.body.search, $options: "i" } } : null)},
-          {...(req.body.semester ? { semester: req.body.semester} : null)}
+          {...(req.body.semester ? { semester: req.body.semester} : null)},
+          {...(req.body.isTeacher ? {isTeacher: true} : null)}
         ],
         isVerified: true,
       };
