@@ -17,6 +17,18 @@ let findAndUpdate = async function (model, conditions, update, options) {
     return  model.findOneAndUpdate(conditions, update, options);
 };
 
+const upsert = async(model, data, id) => {
+    let dataRes = null;
+    if(id) {
+        // update
+        delete data.id;
+        dataRes = await model.findByIdAndUpdate(id, {...data}, {new: true})
+    } else {
+        dataRes = await model.create(data);
+    }
+    return dataRes;
+}
+
 let findAndRemove = async function (model, conditions, update, options) {
     return  model.findOneAndRemove(conditions, options);
 };
@@ -136,5 +148,6 @@ module.exports = {
     bulkFindAndUpdate : bulkFindAndUpdate,
     bulkFindAndUpdateOne : bulkFindAndUpdateOne,
     getRequiredPopulate: getRequiredPopulate,
-    updateMany
+    updateMany,
+    upsert
 };

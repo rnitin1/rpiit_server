@@ -109,7 +109,7 @@ exports.deleteAdmin = async (req, res) => {
   }
 }
 
-exports.addAdmin = async (req, res) => { 
+exports.addAdmin = async (req, res) => {
   try {
     if (req.user.roleId === 1) {
       const { name, email, password, actionType, _id } = req.body;
@@ -126,7 +126,7 @@ exports.addAdmin = async (req, res) => {
       if (_id) {
         // update mode
         let hashed = ''
-        if(password) {
+        if (password) {
 
           hashed = await universalFunction.Password.getPasswordAsync(password);
         }
@@ -485,30 +485,39 @@ exports.updateStudent = async (req, res) => {
 exports.addAnnouncement = async (req, res) => {
   try {
     if (req.user.type === 'ALL' || req.user.type === 'announcement') {
-      let { title, date, description, url, deviceType, image } = req.body;
+      let { title, date, description, url, deviceType, image, id } = req.body;
       console.log({ title, date, description, url, image: req.file });
       let dataToSave = { title, date, description, url, deviceType };
-      if (deviceType === 'mobile') {
-        dataToSave.image = image;
+      if(req.file) {
+        console.log(12)
+        if (deviceType === 'mobile') {
+          dataToSave.image = image;
+        }
+        if (req.file) {
+          dataToSave.image = path + req.file.filename;
+        }
       }
-      if (req.file) {
-        dataToSave.image = path + req.file.filename;
-      }
-      let saveData = await db.saveData(Model.Announcement, dataToSave);
+      // let saveData = await db.saveData(Model.Announcement, dataToSave);
+      let saveData = await db.upsert(Model.Announcement, dataToSave, id === '0' ? null : id);
+
       // send announcements
-      // sendNotificationToAllStudentsWithToken({
-      //   title: "New Announcement",
-      //   body: description,
-      //   data: saveData.id
-      // })
+      if (id !== '0') {
+
+        // sendNotificationToAllStudentsWithToken({
+        //   title: "New Announcement",
+        //   body: description,
+        //   data: saveData.id
+        // })
+      }
       res.status(200).send({
         data: saveData,
         customMessage: 'OK',
         statusCode: 200,
         // count,
       });
+    } else {
+      return res.send(config.ErrorStatus.STATUS_MSG.ERROR.UNAUTHORIZED);
     }
-    return res.send(config.ErrorStatus.STATUS_MSG.ERROR.UNAUTHORIZED);
   } catch (err) {
     res.status(401).send(err);
     return console.log('ERROR', err);
@@ -608,7 +617,7 @@ exports.changeSemester = async (req, res) => {
 
 exports.getAnnouncement = async (req, res) => {
   try {
-    let announcement = await db.getData(Model.Announcement); 
+    let announcement = await db.getData(Model.Announcement);
     if (!announcement)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({

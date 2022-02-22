@@ -554,6 +554,7 @@ exports.addEvent = async (req, res) => {
         creatorId,
         position,
         price,
+        id
         // deviceType,
       } = req.body;
       console.log("req.bodyasdasd", req.body, "image", req.file);
@@ -572,22 +573,28 @@ exports.addEvent = async (req, res) => {
         created_on: Date.now()
       };
       console.log({ dataToSave });
-      if (deviceType === "mobile") {
-        dataToSave.image = image;
-        dataToSave.creatorId = creatorId;
-      } else {
-        dataToSave.image = path + req.file.filename;
-        dataToSave.isVerify = true;
+      if (image) {
+
+        if (deviceType === "mobile") {
+          dataToSave.image = image;
+          dataToSave.creatorId = creatorId;
+        } else {
+          dataToSave.image = path + req.file.filename;
+          dataToSave.isVerify = true;
+        }
       }
-      let saveData = await db.saveData(Model.Event, dataToSave);
+      let saveData = await db.upsert(Model.Event, dataToSave, id !== '0' ? id : null);
       // check if eventType equal sports
 
       // send announcements
-      // sendNotificationToAllStudentsWithToken({
-      //   title: `New ${eventType} Event`,
-      //   body: description,
-      //   data: saveData.id
-      // })
+      if (id === '0') {
+
+        sendNotificationToAllStudentsWithToken({
+          title: `New ${eventType} Event`,
+          body: description,
+          data: saveData.id
+        })
+      }
       return res.status(200).send({
         data: saveData,
         customMessage: "Event Added",
@@ -698,6 +705,30 @@ exports.getEventByType = async (req, res) => {
     // if (req.user.type === "ALL" || req.user.type === req.body.eventType) {
     let getData = await db.getData(Model.Event, {
       eventType: req.body.eventType,
+    });
+    return res.status(200).send({
+      data: getData,
+      customMessage: "ok",
+      statusCode: 200,
+    });
+    // }
+
+    // return res.status(200).send({
+    //   // data: getData,
+    //   customMessage: "You are not authorized to perform this action",
+    //   statusCode: 401,
+    // });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+};
+exports.getEventById = async (req, res) => {
+  try {
+    // console.log(req.user.type, "gggggggggg");
+    // if (req.user.type === "ALL" || req.user.type === req.body.eventType) {
+    let getData = await db.findOne(Model.Event, {
+      _id: req.query.id,
     });
     return res.status(200).send({
       data: getData,

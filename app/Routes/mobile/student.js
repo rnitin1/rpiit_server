@@ -43,6 +43,7 @@ Route.post('/forgotPassword', Controller.Student.forgotPassword);
 Route.post('/getResume', Controller.Student.getResume);
 Route.post('/changePassword', Controller.Student.changePassword);
 Route.post('/getEventByType', Controller.Student.getEventByType);
+Route.get('/getEventById', Controller.Student.getEventById);
 Route.post('/updateResume/:id', Controller.Student.updateResume);
 Route.post('/addYearBook', Controller.Student.addYearBook);
 Route.post(
