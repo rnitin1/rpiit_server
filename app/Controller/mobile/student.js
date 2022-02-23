@@ -573,7 +573,7 @@ exports.addEvent = async (req, res) => {
         created_on: Date.now()
       };
       console.log({ dataToSave });
-      if (image) {
+      if (req.file) {
 
         if (deviceType === "mobile") {
           dataToSave.image = image;
