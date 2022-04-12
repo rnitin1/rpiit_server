@@ -285,6 +285,7 @@ exports.addMagzine = async (req, res) => {
 exports.getAllMagzines = async (req, res) => {
   try { 
     const { studentid } = req.query;
+    console.log(studentid);
     let getData = await db.getData(Model.Emagzines, {...(studentid ? {studentId: {$in: [studentid]}} : null)});
     res.status(200).send({
       data: getData,
