@@ -284,7 +284,9 @@ exports.addMagzine = async (req, res) => {
 
 exports.getAllMagzines = async (req, res) => {
   try {
-    let getData = await db.getData(Model.Emagzines);
+    const { studentid } = req.query;
+    console.log(studentid);
+    let getData = await db.getData(Model.Emagzines, {...(studentid ? {studentId: studentid} : null)});
     res.status(200).send({
       data: getData,
       customMessage: "ok",
