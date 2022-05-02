@@ -7,6 +7,7 @@ const { sendMail1 } = require("../../utils/sendMail");
 const bcrypt = require("bcryptjs");
 let { deleteFile } = require("./../../UniversalFuntions/universal")
 let path = "https://api.appformersrpiit.co.in//uploader/";
+const { sendNotificationToAllStudentsWithToken } = require('../../services/fcm');
 // let path = "http://localhost:8000/uploader/";
 
 exports.signup = async (req, res) => {
