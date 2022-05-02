@@ -602,8 +602,10 @@ exports.addEvent = async (req, res) => {
         customMessage: "Event Added",
         statusCode: 200,
       });
+    } else {
+
+      return res.send(config.ErrorStatus.STATUS_MSG.ERROR.UNAUTHORIZED);
     }
-    return res.send(config.ErrorStatus.STATUS_MSG.ERROR.UNAUTHORIZED);
   } catch (err) {
     res.status(401).send(err);
     return console.log("ERROR", err);
